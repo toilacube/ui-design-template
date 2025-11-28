@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dsAI - Accessible & Ethical Design</title>
+    <meta name="description" content="Intelligent Business Transformation - Accessible digital solutions for modern enterprise.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Public Sans is a strong, legible font -->
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class', // Keeping class strategy, though this design prefers system settings
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Public Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        // High Contrast Palette
+                        a11yBlack: '#101010', 
+                        a11yWhite: '#FFFFFF',
+                        a11yBlue: '#0044CC', // Standard accessible link blue
+                        a11yDarkBlue: '#002a80',
+                        a11yYellow: '#FFEB3B', // For focus states
+                        a11yBg: '#F8F9FA',
+                    },
+                    outline: {
+                        // Thick, clear outline for focus
+                        a11y: '4px solid #FFEB3B', 
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Base Accessibility Styles */
+        body {
+            line-height: 1.6;
+            color: #101010;
+        }
+
+        /* Skip to Content Link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #0044CC;
+            color: white;
+            padding: 8px 16px;
+            z-index: 100;
+            transition: top 0.2s;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .skip-link:focus {
+            top: 0;
+            outline: 4px solid #FFEB3B;
+            outline-offset: -2px;
+        }
+
+        /* Focus States - Crucial for Keyboard Nav */
+        *:focus-visible {
+            outline: 4px solid #0044CC;
+            outline-offset: 2px;
+            border-radius: 2px;
+        }
+
+        /* Respect Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto !important;
+            }
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+        /* High Contrast Selection */
+        ::selection {
+            background-color: #0044CC;
+            color: #FFFFFF;
+        }
+        
+        /* Typography Scale - Large by default */
+        p { font-size: 1.125rem; } /* 18px body text */
+    </style>
+</head>
+<body class="bg-a11yBg text-a11yBlack antialiased">
+
+    <!-- Skip Navigation -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Accessibility Controls (Top Bar) -->
+    <div class="bg-white border-b border-gray-300 py-2 px-4 md:px-8 flex justify-end gap-4 text-sm" role="complementary" aria-label="Accessibility settings">
+        <button onclick="toggleHighContrast()" class="hover:underline flex items-center gap-2 font-medium text-a11yBlue" aria-pressed="false" id="contrast-btn">
+            <span class="text-lg" aria-hidden="true">◐</span> High Contrast
+        </button>
+        <button onclick="toggleAnimation()" class="hover:underline flex items-center gap-2 font-medium text-a11yBlue" aria-pressed="false" id="anim-btn">
+            <span class="text-lg" aria-hidden="true">⏯</span> <span id="anim-text">Pause Animations</span>
+        </button>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-white border-b-2 border-gray-200 sticky top-0 z-40">
+        <div class="max-w-5xl mx-auto px-4 md:px-8 h-20 flex justify-between items-center">
+            <!-- Logo -->
+            <a href="#" class="text-2xl font-bold tracking-tight text-a11yBlue underline decoration-2 underline-offset-4 hover:decoration-4 hover:bg-a11yBlue hover:text-white transition-colors p-2 -ml-2 rounded" aria-label="dsAI Home">
+                dsAI
+            </a>
+
+            <!-- Desktop Nav -->
+            <nav class="hidden lg:flex items-center gap-6" aria-label="Main Navigation">
+                <a href="#services" class="text-lg font-medium text-a11yBlack hover:text-a11yBlue hover:underline p-2 rounded">Solutions</a>
+                <a href="#case-studies" class="text-lg font-medium text-a11yBlack hover:text-a11yBlue hover:underline p-2 rounded">Case Studies</a>
+                <a href="#methodology" class="text-lg font-medium text-a11yBlack hover:text-a11yBlue hover:underline p-2 rounded">Methodology</a>
+                <a href="#contact" class="px-6 py-2.5 bg-a11yBlue text-white font-bold rounded hover:bg-a11yDarkBlue transition-colors focus:ring-4 focus:ring-a11yYellow shadow-sm">
+                    Book Consultation
+                </a>
+            </nav>
+
+            <!-- Mobile Menu Button -->
+            <button class="lg:hidden p-2 border-2 border-a11yBlack rounded text-a11yBlack font-bold hover:bg-gray-100" aria-label="Open Menu">
+                Menu
+            </button>
+        </div>
+    </header>
+
+    <main id="main-content">
+        
+        <!-- HERO SECTION -->
+        <section class="border-b border-gray-300 bg-white relative">
+            <div class="max-w-5xl mx-auto px-4 md:px-8 py-16 md:py-24 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <!-- Content -->
+                <div class="z-10 bg-white/90 p-4 rounded-lg">
+                    <h1 class="text-4xl md:text-5xl font-bold leading-tight mb-6 text-a11yBlack">
+                        Intelligent Business <br>Transformation
+                    </h1>
+                    
+                    <p class="text-xl mb-8 text-gray-800 leading-relaxed max-w-xl">
+                        Your Operations, Streamlined. Your Data, Centralized. Your Future, Secured. <br><br>
+                        dsAI delivers custom digital solutions that eliminate silos and elevate your customer support.
+                    </p>
+                    
+                    <ul class="mb-10 space-y-3" role="list">
+                        <li class="flex items-start gap-3">
+                            <span class="text-a11yBlue font-bold text-xl" aria-hidden="true">✓</span>
+                            <span class="font-medium text-lg">Reduce operational overhead by 40%</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-a11yBlue font-bold text-xl" aria-hidden="true">✓</span>
+                            <span class="font-medium text-lg">Unified data sources for real-time intelligence</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-a11yBlue font-bold text-xl" aria-hidden="true">✓</span>
+                            <span class="font-medium text-lg">Enterprise-grade security & compliance</span>
+                        </li>
+                    </ul>
+
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#contact" class="inline-flex justify-center items-center px-8 py-4 bg-a11yBlue text-white text-lg font-bold rounded hover:bg-a11yDarkBlue focus:ring-4 focus:ring-a11yYellow transition-colors shadow-md">
+                            Get Custom Strategy
+                        </a>
+                        <a href="#services" class="inline-flex justify-center items-center px-8 py-4 bg-white text-a11yBlue border-2 border-a11yBlue text-lg font-bold rounded hover:bg-blue-50 focus:ring-4 focus:ring-a11yYellow transition-colors">
+                            Explore Services
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Visualization with Aria Description -->
+                <div class="relative h-[400px] w-full border-2 border-gray-200 rounded-lg bg-gray-50 overflow-hidden" role="img" aria-label="Interactive 3D visualization showing connected data nodes forming a shield structure.">
+                    <div id="canvas-container" class="w-full h-full"></div>
+                    <!-- Fallback/Description for Screen Readers -->
+                    <div class="sr-only">A network of blue dots connected by lines rotating slowly, representing data centralization and security.</div>
+                    
+                    <!-- Explicit Control for Vis -->
+                    <button onclick="toggleAnimation()" class="absolute bottom-4 right-4 bg-white border border-gray-300 px-3 py-1 text-sm font-medium rounded shadow hover:bg-gray-100 z-10 focus:ring-2 focus:ring-a11yBlue">
+                        Pause Motion
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROBLEM SECTION -->
+        <section class="py-16 md:py-24 bg-a11yBg">
+            <div class="max-w-5xl mx-auto px-4 md:px-8">
+                <div class="max-w-3xl mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4 text-a11yBlack">The Efficiency Gap</h2>
+                    <p class="text-xl text-gray-800">Why high-growth companies hit a ceiling.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8" role="list">
+                    <!-- Card 1 -->
+                    <div class="bg-white p-8 rounded border border-gray-200 shadow-sm" role="listitem">
+                        <h3 class="text-2xl font-bold mb-4 flex items-center gap-2 text-a11yDarkBlue">
+                            <span aria-hidden="true" class="bg-blue-100 text-a11yBlue rounded-full w-8 h-8 flex items-center justify-center text-sm">1</span>
+                            Data Silos
+                        </h3>
+                        <p class="text-lg text-gray-800">Critical customer data is trapped in disconnected tools, leading to blind spots in decision-making.</p>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="bg-white p-8 rounded border border-gray-200 shadow-sm" role="listitem">
+                        <h3 class="text-2xl font-bold mb-4 flex items-center gap-2 text-a11yDarkBlue">
+                            <span aria-hidden="true" class="bg-blue-100 text-a11yBlue rounded-full w-8 h-8 flex items-center justify-center text-sm">2</span>
+                            Bottlenecks
+                        </h3>
+                        <p class="text-lg text-gray-800">Highly skilled talent is wasted on copy-paste data entry and repetitive admin tasks.</p>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="bg-white p-8 rounded border border-gray-200 shadow-sm" role="listitem">
+                        <h3 class="text-2xl font-bold mb-4 flex items-center gap-2 text-a11yDarkBlue">
+                            <span aria-hidden="true" class="bg-blue-100 text-a11yBlue rounded-full w-8 h-8 flex items-center justify-center text-sm">3</span>
+                            Reactive
+                        </h3>
+                        <p class="text-lg text-gray-800">Customer support is overwhelmed, leading to slow response times and increased churn.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FEATURES SECTION -->
+        <section id="services" class="py-16 md:py-24 bg-white border-y border-gray-200">
+            <div class="max-w-5xl mx-auto px-4 md:px-8">
+                <h2 class="text-3xl md:text-4xl font-bold mb-16 text-center text-a11yBlack">The dsAI Advantage</h2>
+
+                <div class="space-y-16">
+                    <!-- Feature 1 -->
+                    <article class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                        <div>
+                            <h3 class="text-2xl font-bold mb-4 text-a11yDarkBlue">Streamlined Operations & Workflow Automation</h3>
+                            <p class="text-lg text-gray-800 mb-6">We automate repetitive manual processes using custom scripts and API integrations. This reduces operational overhead by up to 40% and frees your team for high-value strategic work.</p>
+                            <ul class="space-y-2 list-disc pl-5 text-lg" role="list">
+                                <li>Custom API development</li>
+                                <li>Cross-platform synchronization</li>
+                                <li>Automated reporting & invoicing</li>
+                            </ul>
+                        </div>
+                        <div class="bg-blue-50 border border-blue-100 p-8 rounded-lg flex items-center justify-center min-h-[250px]">
+                            <!-- Text-based Graphic representation -->
+                            <div class="text-center">
+                                <span class="block text-5xl mb-2" role="img" aria-label="Gear icon">⚙️</span>
+                                <span class="font-bold text-a11yDarkBlue">Automation Engine</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <hr class="border-gray-200" aria-hidden="true">
+
+                    <!-- Feature 2 -->
+                    <article class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                        <div class="md:order-2">
+                            <h3 class="text-2xl font-bold mb-4 text-a11yDarkBlue">Centralized Data Warehousing</h3>
+                            <p class="text-lg text-gray-800 mb-6">Stop jumping between tabs. We unify your disparate tools (CRM, ERP, Marketing) into a single source of truth (SSOT). Gain real-time visibility into KPIs.</p>
+                            <ul class="space-y-2 list-disc pl-5 text-lg" role="list">
+                                <li>ETL (Extract, Transform, Load) pipelines</li>
+                                <li>Real-time dashboard visualization</li>
+                                <li>Legacy database migration</li>
+                            </ul>
+                        </div>
+                        <div class="md:order-1 bg-blue-50 border border-blue-100 p-8 rounded-lg flex items-center justify-center min-h-[250px]">
+                             <div class="text-center">
+                                <span class="block text-5xl mb-2" role="img" aria-label="Database icon">🗄️</span>
+                                <span class="font-bold text-a11yDarkBlue">Unified Data</span>
+                            </div>
+                        </div>
+                    </article>
+
+                     <hr class="border-gray-200" aria-hidden="true">
+
+                    <!-- Feature 3 -->
+                    <article class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                        <div>
+                            <h3 class="text-2xl font-bold mb-4 text-a11yDarkBlue">Elevated AI Support Agents</h3>
+                            <p class="text-lg text-gray-800 mb-6">Deploy intelligent, NLP-driven AI agents that handle Tier-1 inquiries instantly. Ensure your customers feel heard 24/7 while escalating complex issues.</p>
+                            <ul class="space-y-2 list-disc pl-5 text-lg" role="list">
+                                <li>Natural Language Processing (NLP)</li>
+                                <li>Multi-channel deployment</li>
+                                <li>Sentiment analysis & routing</li>
+                            </ul>
+                        </div>
+                        <div class="bg-blue-50 border border-blue-100 p-8 rounded-lg flex items-center justify-center min-h-[250px]">
+                             <div class="text-center">
+                                <span class="block text-5xl mb-2" role="img" aria-label="Robot icon">🤖</span>
+                                <span class="font-bold text-a11yDarkBlue">AI Assistant</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- METHODOLOGY -->
+        <section id="methodology" class="py-16 md:py-24 bg-a11yBg">
+            <div class="max-w-5xl mx-auto px-4 md:px-8">
+                <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center text-a11yBlack">From Chaos to Clarity</h2>
+                
+                <ol class="space-y-8 md:space-y-0 md:grid md:grid-cols-4 md:gap-8 list-none">
+                    <li class="bg-white p-6 rounded border border-gray-200 shadow-sm relative">
+                        <span class="absolute -top-4 left-6 bg-a11yBlue text-white w-8 h-8 rounded-full flex items-center justify-center font-bold">1</span>
+                        <h3 class="text-xl font-bold mb-2 mt-2">Discovery</h3>
+                        <p class="text-gray-800">We dive deep into your current stack to identify bottlenecks.</p>
+                    </li>
+                    <li class="bg-white p-6 rounded border border-gray-200 shadow-sm relative">
+                        <span class="absolute -top-4 left-6 bg-a11yBlue text-white w-8 h-8 rounded-full flex items-center justify-center font-bold">2</span>
+                        <h3 class="text-xl font-bold mb-2 mt-2">Strategy</h3>
+                        <p class="text-gray-800">We design a custom roadmap and select the right tech stack.</p>
+                    </li>
+                    <li class="bg-white p-6 rounded border border-gray-200 shadow-sm relative">
+                        <span class="absolute -top-4 left-6 bg-a11yBlue text-white w-8 h-8 rounded-full flex items-center justify-center font-bold">3</span>
+                        <h3 class="text-xl font-bold mb-2 mt-2">Build</h3>
+                        <p class="text-gray-800">Agile sprints give you visibility as the solution takes shape.</p>
+                    </li>
+                    <li class="bg-white p-6 rounded border border-gray-200 shadow-sm relative">
+                        <span class="absolute -top-4 left-6 bg-a11yBlue text-white w-8 h-8 rounded-full flex items-center justify-center font-bold">4</span>
+                        <h3 class="text-xl font-bold mb-2 mt-2">Training</h3>
+                        <p class="text-gray-800">We train your team to ensure long-term adoption.</p>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- CASE STUDIES (Clear Table/Grid Layout) -->
+        <section id="case-studies" class="py-16 md:py-24 bg-white border-t border-gray-200">
+            <div class="max-w-5xl mx-auto px-4 md:px-8">
+                <h2 class="text-3xl md:text-4xl font-bold mb-12 text-a11yBlack">Proven Results</h2>
+
+                <div class="grid gap-8 md:grid-cols-2">
+                    <div class="border-2 border-gray-200 rounded p-6 hover:border-a11yBlue transition-colors focus-within:ring-4 focus-within:ring-a11yYellow">
+                        <span class="bg-gray-100 text-a11yBlack font-bold px-3 py-1 rounded text-sm uppercase">Logistics</span>
+                        <h3 class="text-2xl font-bold mt-4 mb-2">Global Logistics Dashboard</h3>
+                        <p class="text-lg text-gray-800 mb-4">Unified data lake with predictive shipping analytics.</p>
+                        <p class="text-2xl font-bold text-a11yDarkBlue mb-6">32% reduction in shipping delays</p>
+                        <a href="#" class="font-bold text-a11yBlue hover:underline decoration-2 underline-offset-4 flex items-center gap-2">
+                            Read Case Study <span aria-hidden="true">&rarr;</span>
+                        </a>
+                    </div>
+
+                    <div class="border-2 border-gray-200 rounded p-6 hover:border-a11yBlue transition-colors focus-within:ring-4 focus-within:ring-a11yYellow">
+                        <span class="bg-gray-100 text-a11yBlack font-bold px-3 py-1 rounded text-sm uppercase">FinTech</span>
+                        <h3 class="text-2xl font-bold mt-4 mb-2">CRM Integration</h3>
+                        <p class="text-lg text-gray-800 mb-4">Automated KYC and document verification pipeline.</p>
+                        <p class="text-2xl font-bold text-a11yDarkBlue mb-6">60% faster onboarding</p>
+                        <a href="#" class="font-bold text-a11yBlue hover:underline decoration-2 underline-offset-4 flex items-center gap-2">
+                            Read Case Study <span aria-hidden="true">&rarr;</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA & FORM -->
+        <section id="contact" class="py-16 md:py-24 bg-a11yBg border-t border-gray-200">
+            <div class="max-w-3xl mx-auto px-4 md:px-8 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6 text-a11yBlack">Ready to modernize your business?</h2>
+                <p class="text-xl text-gray-800 mb-8">Stop letting inefficiencies hold you back. Let’s build a custom roadmap.</p>
+                
+                <form class="bg-white p-8 rounded border border-gray-300 shadow-sm text-left">
+                    <div class="mb-6">
+                        <label for="email" class="block text-lg font-bold mb-2 text-a11yBlack">Work Email Address <span class="text-red-700" aria-hidden="true">*</span></label>
+                        <input type="email" id="email" name="email" required placeholder="name@company.com" 
+                               class="w-full p-4 border-2 border-gray-400 rounded text-lg text-a11yBlack focus:border-a11yBlue focus:ring-4 focus:ring-a11yYellow transition-colors"
+                               aria-required="true">
+                        <p class="mt-2 text-sm text-gray-600">We will never share your email.</p>
+                    </div>
+                    <button type="submit" class="w-full bg-a11yBlue text-white text-xl font-bold py-4 rounded hover:bg-a11yDarkBlue focus:ring-4 focus:ring-a11yYellow transition-colors shadow-md">
+                        Schedule Discovery Call
+                    </button>
+                </form>
+                <p class="mt-6 text-gray-700">Free initial consultation. You will receive a response within 24 hours.</p>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="bg-gray-900 text-white py-16 px-4 md:px-8">
+            <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <span class="text-2xl font-bold block mb-4">dsAI</span>
+                    <p class="mb-4">Custom digital solutions for the modern enterprise.</p>
+                    <address class="not-italic">
+                        123 Innovation Dr, Tech City<br>
+                        <a href="mailto:hello@dsai.com" class="text-white underline hover:text-gray-300">hello@dsai.com</a>
+                    </address>
+                </div>
+                
+                <nav aria-label="Footer Services Navigation">
+                    <h2 class="font-bold text-lg mb-4 text-gray-200">Services</h2>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="underline hover:text-gray-300">Automation</a></li>
+                        <li><a href="#" class="underline hover:text-gray-300">Warehousing</a></li>
+                        <li><a href="#" class="underline hover:text-gray-300">AI Support</a></li>
+                    </ul>
+                </nav>
+
+                <nav aria-label="Footer Company Navigation">
+                    <h2 class="font-bold text-lg mb-4 text-gray-200">Company</h2>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="underline hover:text-gray-300">About dsAI</a></li>
+                        <li><a href="#" class="underline hover:text-gray-300">Careers</a></li>
+                    </ul>
+                </nav>
+
+                <nav aria-label="Footer Legal Navigation">
+                    <h2 class="font-bold text-lg mb-4 text-gray-200">Legal</h2>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="underline hover:text-gray-300">Privacy Policy</a></li>
+                        <li><a href="#" class="underline hover:text-gray-300">Terms of Service</a></li>
+                        <li><a href="#" class="underline hover:text-gray-300">Accessibility Statement</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="max-w-5xl mx-auto mt-12 pt-8 border-t border-gray-700 flex flex-col md:flex-row justify-between text-sm">
+                <p>© 2025 dsAI. All rights reserved.</p>
+                <p>SOC2 Certified | ISO 27001</p>
+            </div>
+        </footer>
+
+    </main>
+
+    <script>
+        // Accessibility Tools Logic
+        let animationPaused = false;
+        
+        // Check for reduced motion preference
+        const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+        if (mediaQuery.matches) {
+            animationPaused = true;
+            updateAnimBtn();
+        }
+
+        function toggleHighContrast() {
+            document.body.classList.toggle('bg-white');
+            document.body.classList.toggle('bg-black');
+            document.body.classList.toggle('text-white');
+            // In a real app, this would swap a full variable set
+            // For this demo, we handle the button state aria
+            const btn = document.getElementById('contrast-btn');
+            const isPressed = btn.getAttribute('aria-pressed') === 'true';
+            btn.setAttribute('aria-pressed', !isPressed);
+            
+            // Simple filter inversion for quick high contrast simulation
+            const filter = document.body.style.filter;
+            document.body.style.filter = filter === 'invert(1) hue-rotate(180deg)' ? '' : 'invert(1) hue-rotate(180deg)';
+        }
+
+        function toggleAnimation() {
+            animationPaused = !animationPaused;
+            updateAnimBtn();
+        }
+
+        function updateAnimBtn() {
+            const btn = document.getElementById('anim-btn');
+            const text = document.getElementById('anim-text');
+            btn.setAttribute('aria-pressed', animationPaused);
+            text.textContent = animationPaused ? "Resume Animations" : "Pause Animations";
+        }
+
+        // THREE.JS - Low Motion / High Clarity
+        let scene, camera, renderer, particles;
+        const container = document.getElementById('canvas-container');
+
+        function initThree() {
+            if (!container) return;
+
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xf9fafb); // Match bg-gray-50
+            
+            const aspect = container.clientWidth / container.clientHeight;
+            camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
+            camera.position.z = 40;
+
+            renderer = new THREE.WebGLRenderer({ antialias: true }); // No alpha needed, solid bg better for contrast
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            container.appendChild(renderer.domElement);
+
+            // Create High Contrast Nodes
+            const geometry = new THREE.SphereGeometry(1, 16, 16);
+            const material = new THREE.MeshBasicMaterial({ color: 0x0044CC }); // Access Blue
+            const lineMaterial = new THREE.LineBasicMaterial({ color: 0x000000, linewidth: 2, transparent: true, opacity: 0.2 });
+
+            const group = new THREE.Group();
+            const particleCount = 20;
+            const nodes = [];
+
+            for(let i=0; i<particleCount; i++) {
+                const mesh = new THREE.Mesh(geometry, material);
+                mesh.position.x = (Math.random() - 0.5) * 40;
+                mesh.position.y = (Math.random() - 0.5) * 30;
+                mesh.position.z = (Math.random() - 0.5) * 20;
+                group.add(mesh);
+                nodes.push(mesh);
+            }
+            
+            // Draw static lines for structure
+            const lineGeo = new THREE.BufferGeometry();
+            const points = [];
+            
+            for(let i=0; i<nodes.length; i++) {
+                for(let j=i+1; j<nodes.length; j++) {
+                    if(nodes[i].position.distanceTo(nodes[j].position) < 15) {
+                        points.push(nodes[i].position);
+                        points.push(nodes[j].position);
+                    }
+                }
+            }
+            lineGeo.setFromPoints(points);
+            const lines = new THREE.LineSegments(lineGeo, lineMaterial);
+            group.add(lines);
+
+            scene.add(group);
+            particles = group;
+
+            window.addEventListener('resize', onWindowResize, false);
+            animate();
+        }
+
+        function onWindowResize() {
+            if (!container || !camera || !renderer) return;
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            if (!animationPaused && particles) {
+                // Very slow, deliberate rotation
+                particles.rotation.y += 0.001;
+            }
+            
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('load', initThree);
+    </script>
+</body>
+</html>

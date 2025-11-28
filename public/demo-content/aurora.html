@@ -1,224 +1,606 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aurora UI</title>
-    <link rel="stylesheet" href="/src/index.css">
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <title>dsAI - Aurora UI</title>
+    <meta name="description" content="Intelligent Business Transformation - Atmospheric and Fluid.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        auroraDark: '#0B0D17', // Deep Space
+                        auroraLight: '#FFFFFF',
+                        // Aurora Accents
+                        auTeal: '#00F0FF',
+                        auPurple: '#7000FF',
+                        auPink: '#FF0055',
+                        auBlue: '#2D5AF5',
+                    },
+                    animation: {
+                        'aurora-flow': 'aurora 10s ease infinite alternate',
+                        'blob-1': 'blob 20s infinite alternate',
+                        'blob-2': 'blob 25s infinite alternate-reverse',
+                        'blob-3': 'blob 30s infinite alternate',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0, 0) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0, 0) scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
-
-        body {
-            font-family: 'Outfit', sans-serif;
-            background-color: #0f172a;
-            /* Dark Slate Base */
-            color: white;
-            overflow-x: hidden;
+        /* Ambient Aurora Background Layer */
+        .aurora-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            overflow: hidden;
+            background: #0B0D17; /* Default Dark Base */
+            transition: background 0.5s ease;
         }
 
-        /* AURORA ANIMATIONS
-           We move large radial gradients around to create the "mesh" effect.
-        */
+        /* Light mode base override handled via utility classes in HTML */
+
+        /* The glowing blobs */
         .aurora-blob {
-            position: fixed;
+            position: absolute;
             border-radius: 50%;
             filter: blur(80px);
-            /* The key to the soft look */
-            opacity: 0.6;
-            z-index: 0;
-            animation: float 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .blob-1 {
-            top: -10%;
-            left: -10%;
-            width: 50vw;
-            height: 50vw;
-            background: #7e22ce;
-            /* Purple */
-            animation-delay: 0s;
-        }
-
-        .blob-2 {
-            bottom: -10%;
-            right: -10%;
-            width: 60vw;
-            height: 60vw;
-            background: #0ea5e9;
-            /* Sky Blue */
-            animation-delay: -5s;
-            animation-direction: alternate-reverse;
-        }
-
-        .blob-3 {
-            top: 40%;
-            left: 40%;
-            width: 40vw;
-            height: 40vw;
-            background: #ec4899;
-            /* Pink */
-            animation-duration: 25s;
-            animation-delay: -10s;
-        }
-
-        @keyframes float {
-            0% {
-                transform: translate(0, 0) scale(1);
-            }
-
-            50% {
-                transform: translate(10%, 20%) scale(1.1);
-            }
-
-            100% {
-                transform: translate(-10%, -10%) scale(0.9);
-            }
-        }
-
-        /* GLASSMOPHISM CARDS
-           Lighter and softer than typical glassmorphism.
-        */
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(16px) saturate(180%);
-            -webkit-backdrop-filter: blur(16px) saturate(180%);
+        /* Glass Cards */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+            border-radius: 24px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            transition: background 0.3s ease, border-color 0.3s ease;
         }
 
-        /* Smooth inputs */
-        .aurora-input {
+        .dark .glass-card {
             background: rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        /* Light mode glass overrides: More transparent to show the glow */
+        body:not(.dark) .glass-card {
+            background: rgba(255, 255, 255, 0.25); /* More transparent */
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.05);
         }
 
-        .aurora-input:focus {
-            background: rgba(0, 0, 0, 0.4);
-            border-color: rgba(255, 255, 255, 0.3);
-            outline: none;
-            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.05);
+        /* Gradient Text */
+        .text-aurora {
+            background: linear-gradient(135deg, #00F0FF 0%, #7000FF 50%, #FF0055 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Nav Link Hover Glow */
+        .nav-link {
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #00F0FF, #FF0055);
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+        .nav-link:hover::after {
+            width: 100%;
         }
     </style>
 </head>
+<body class="text-gray-900 dark:text-white font-sans antialiased transition-colors duration-500">
 
-<body class="min-h-screen flex items-center justify-center p-4 md:p-8 relative">
-
-    <!-- The Aurora Background -->
-    <div class="blob-1 aurora-blob"></div>
-    <div class="blob-2 aurora-blob"></div>
-    <div class="blob-3 aurora-blob"></div>
-
-    <!-- Main Interface -->
-    <div class="relative z-10 w-full max-w-5xl grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-
-        <!-- Left Column: Copy -->
-        <div class="md:col-span-7 space-y-6 text-center md:text-left p-4">
-            <div
-                class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-md">
-                <span class="w-2 h-2 rounded-full bg-green-400 shadow-[0_0_10px_rgba(74,222,128,0.5)]"></span>
-                <span class="text-xs font-medium tracking-wide text-white/80">v2.0 Now Available</span>
-            </div>
-
-            <h1 class="text-5xl md:text-7xl font-bold tracking-tight leading-tight">
-                Design with <br>
-                <span
-                    class="text-transparent bg-clip-text bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-300 animate-pulse">Luminescence</span>
-            </h1>
-
-            <p class="text-lg text-white/60 font-light max-w-lg mx-auto md:mx-0">
-                Aurora UI brings atmospheric depth to your digital products.
-                Soft gradients and blurred forms create an immersive, calming experience.
-            </p>
-
-            <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start pt-4">
-                <button
-                    class="px-8 py-3.5 rounded-2xl bg-white text-slate-900 font-semibold hover:bg-opacity-90 transition-all hover:scale-105 shadow-[0_0_20px_rgba(255,255,255,0.3)]">
-                    Get Started
-                </button>
-                <button
-                    class="px-8 py-3.5 rounded-2xl glass-panel text-white font-medium hover:bg-white/10 transition-all flex items-center gap-2">
-                    <i class="ph ph-play-circle text-xl"></i> Watch Demo
-                </button>
-            </div>
-        </div>
-
-        <!-- Right Column: Interactive Card -->
-        <div class="md:col-span-5">
-            <div class="glass-panel rounded-[2rem] p-8 md:p-10 relative overflow-hidden group">
-
-                <!-- Internal Glow Effect on Hover -->
-                <div
-                    class="absolute inset-0 bg-gradient-to-tr from-purple-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
-                </div>
-
-                <div class="relative z-10">
-                    <div class="flex justify-between items-center mb-8">
-                        <h2 class="text-2xl font-semibold">Sign In</h2>
-                        <i class="ph ph-asterisk text-purple-300 text-2xl animate-spin-slow"
-                            style="animation-duration: 10s"></i>
-                    </div>
-
-                    <form class="space-y-5">
-                        <div class="space-y-2">
-                            <label class="text-sm text-white/60 ml-1">Email Address</label>
-                            <div class="relative">
-                                <i class="ph ph-envelope absolute left-4 top-1/2 -translate-y-1/2 text-white/40"></i>
-                                <input type="email" placeholder="name@example.com"
-                                    class="aurora-input w-full rounded-xl py-3 pl-11 pr-4 text-white placeholder-white/30" />
-                            </div>
-                        </div>
-
-                        <div class="space-y-2">
-                            <label class="text-sm text-white/60 ml-1">Password</label>
-                            <div class="relative">
-                                <i class="ph ph-lock-key absolute left-4 top-1/2 -translate-y-1/2 text-white/40"></i>
-                                <input type="password" placeholder="••••••••"
-                                    class="aurora-input w-full rounded-xl py-3 pl-11 pr-4 text-white placeholder-white/30" />
-                            </div>
-                        </div>
-
-                        <div class="flex items-center justify-between text-xs text-white/50 px-1">
-                            <label class="flex items-center gap-2 cursor-pointer hover:text-white transition-colors">
-                                <input type="checkbox" class="rounded bg-white/10 border-white/20" />
-                                <span>Remember me</span>
-                            </label>
-                            <a href="#" class="hover:text-pink-300 transition-colors">Forgot Pass?</a>
-                        </div>
-
-                        <button type="button"
-                            class="w-full py-3.5 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 font-medium text-white shadow-lg shadow-purple-900/40 hover:shadow-purple-700/60 hover:scale-[1.02] transition-all">
-                            Access Account
-                        </button>
-                    </form>
-
-                    <div class="mt-8 pt-6 border-t border-white/10 text-center">
-                        <p class="text-sm text-white/50">
-                            Don't have an account? <a href="#"
-                                class="text-white font-medium hover:text-purple-300 transition-colors">Join Free</a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Floating Widget -->
-            <div class="mt-4 glass-panel rounded-2xl p-4 flex items-center gap-4 animate-bounce"
-                style="animation-duration: 3s">
-                <div
-                    class="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center shadow-lg">
-                    <i class="ph-bold ph-check text-white"></i>
-                </div>
-                <div>
-                    <p class="text-sm font-semibold">System Operational</p>
-                    <p class="text-xs text-white/60">All nodes connected</p>
-                </div>
-            </div>
-        </div>
-
+    <!-- CSS Aurora Background -->
+    <!-- 
+       LIGHT MODE STRATEGY: 
+       - bg-white base
+       - saturate-150 to boost colors
+       - mix-blend-multiply for blobs creates an "ink on paper" vibrant look
+       - increased blob opacity to 60-80% 
+    -->
+    <div class="aurora-bg dark:bg-auroraDark bg-white saturate-150 dark:saturate-100 transition-all duration-500">
+        <!-- Blob 1: Teal/Blue -->
+        <div class="aurora-blob w-[60vw] h-[60vw] top-[-10%] left-[-10%] animate-blob-1 
+                    bg-auTeal 
+                    opacity-60 mix-blend-multiply 
+                    dark:opacity-30 dark:mix-blend-screen"></div>
+                    
+        <!-- Blob 2: Purple -->
+        <div class="aurora-blob w-[70vw] h-[70vw] top-[20%] right-[-20%] animate-blob-2 
+                    bg-auPurple 
+                    opacity-60 mix-blend-multiply 
+                    dark:opacity-30 dark:mix-blend-screen"></div>
+                    
+        <!-- Blob 3: Pink -->
+        <div class="aurora-blob w-[50vw] h-[50vw] bottom-[-10%] left-[20%] animate-blob-3 
+                    bg-auPink 
+                    opacity-60 mix-blend-multiply 
+                    dark:opacity-30 dark:mix-blend-screen"></div>
+                    
+        <!-- Extra Blob for Light Mode vibrancy (Yellow/Orange hint) -->
+        <div class="aurora-blob w-[40vw] h-[40vw] top-[40%] left-[40%] animate-blob-2 
+                    bg-yellow-300 
+                    opacity-50 mix-blend-multiply block dark:hidden"></div>
     </div>
 
-</body>
+    <!-- Header -->
+    <header class="fixed top-0 w-full z-50 transition-all duration-300">
+        <div class="glass-card mt-4 mx-4 md:mx-8 px-6 py-4 flex justify-between items-center rounded-2xl">
+            <!-- Logo -->
+            <a href="#" class="text-2xl font-extrabold tracking-tight flex items-center gap-2">
+                dsAI <span class="w-2 h-2 rounded-full bg-auTeal shadow-[0_0_10px_#00F0FF]"></span>
+            </a>
 
+            <!-- Desktop Nav -->
+            <nav class="hidden lg:flex items-center gap-8 text-sm font-medium">
+                <a href="#" class="nav-link hover:text-auPurple transition-colors">Solutions</a>
+                <a href="#case-studies" class="nav-link hover:text-auPurple transition-colors">Case Studies</a>
+                <a href="#methodology" class="nav-link hover:text-auPurple transition-colors">Methodology</a>
+                <a href="#company" class="nav-link hover:text-auPurple transition-colors">Company</a>
+            </nav>
+
+            <!-- Actions -->
+            <div class="flex items-center gap-4">
+                 <button onclick="toggleTheme()" class="w-10 h-10 rounded-full glass-card flex items-center justify-center hover:bg-white/10 transition-colors" aria-label="Toggle Theme">
+                   <div class="w-4 h-4 rounded-full bg-gradient-to-tr from-auTeal to-auPink"></div>
+                </button>
+                <a href="#contact" class="hidden sm:inline-block px-6 py-2.5 rounded-full bg-white/40 dark:bg-white/10 border border-white/20 text-sm font-bold hover:bg-white/60 dark:hover:bg-white/20 transition-all shadow-[0_0_20px_rgba(112,0,255,0.2)] backdrop-blur-md">
+                    Book Consultation
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-32 px-4 md:px-8 pb-24">
+        
+        <!-- HERO SECTION -->
+        <section class="max-w-7xl mx-auto min-h-[85vh] flex flex-col lg:flex-row items-center gap-12 mb-24 relative">
+            
+            <!-- Content -->
+            <div class="w-full lg:w-1/2 z-10">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-8">
+                    <span class="w-2 h-2 rounded-full bg-auPink animate-pulse"></span>
+                    <span class="text-xs font-bold tracking-widest uppercase opacity-80">Intelligent Transformation</span>
+                </div>
+                
+                <h1 class="text-6xl md:text-8xl font-bold leading-[0.9] mb-8 tracking-tight">
+                    Future, <br>
+                    <span class="text-aurora">Illuminated.</span>
+                </h1>
+                
+                <p class="text-xl md:text-2xl opacity-80 leading-relaxed mb-10 max-w-lg font-light">
+                    dsAI delivers fluid digital solutions that eliminate silos. We bridge the gap between legacy systems and AI-driven efficiency.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-6">
+                    <a href="#contact" class="px-8 py-4 rounded-full bg-gradient-to-r from-auPurple to-auPink text-white font-bold shadow-lg shadow-auPurple/30 hover:shadow-auPink/50 hover:scale-105 transition-all">
+                        Get Custom Strategy
+                    </a>
+                    <a href="#services" class="px-8 py-4 rounded-full glass-card hover:bg-white/40 dark:hover:bg-white/10 transition-colors font-bold flex items-center gap-2">
+                        Explore Services <span>↓</span>
+                    </a>
+                </div>
+
+                <!-- Trusted By -->
+                <div class="mt-16 pt-8 border-t border-black/10 dark:border-white/10">
+                    <p class="text-xs uppercase tracking-widest opacity-60 mb-4">Trusted by Enterprise Teams</p>
+                    <div class="flex flex-wrap gap-6 opacity-80 grayscale hover:grayscale-0 transition-all duration-500">
+                        <span class="font-bold text-lg">LogisticsCo</span>
+                        <span class="font-bold text-lg">FinTech Corp</span>
+                        <span class="font-bold text-lg">MedSafe</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3D Vis (Flowing Waves) -->
+            <div class="w-full lg:w-1/2 h-[600px] relative z-0">
+                 <!-- Canvas for Three.js Aurora Wave -->
+                 <div id="canvas-container" class="w-full h-full mask-gradient"></div>
+            </div>
+        </section>
+
+        <!-- PROBLEM SECTION -->
+        <section class="max-w-7xl mx-auto mb-32 relative">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">The Efficiency Gap</h2>
+                <p class="text-xl opacity-70">Why high-growth companies hit a ceiling.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="glass-card p-8 hover:bg-white/20 dark:hover:bg-white/10 transition-colors group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-auTeal/30 rounded-full blur-2xl -mr-10 -mt-10 transition-transform group-hover:scale-150 mix-blend-multiply dark:mix-blend-normal"></div>
+                    <div class="text-4xl mb-6 opacity-30 font-bold">01</div>
+                    <h3 class="text-2xl font-bold mb-4">Data Silos</h3>
+                    <p class="opacity-70 leading-relaxed">Critical customer data is trapped in disconnected tools, leading to blind spots.</p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="glass-card p-8 hover:bg-white/20 dark:hover:bg-white/10 transition-colors group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-auPurple/30 rounded-full blur-2xl -mr-10 -mt-10 transition-transform group-hover:scale-150 mix-blend-multiply dark:mix-blend-normal"></div>
+                    <div class="text-4xl mb-6 opacity-30 font-bold">02</div>
+                    <h3 class="text-2xl font-bold mb-4">Bottlenecks</h3>
+                    <p class="opacity-70 leading-relaxed">Highly skilled talent is wasted on copy-paste data entry and repetitive admin tasks.</p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="glass-card p-8 hover:bg-white/20 dark:hover:bg-white/10 transition-colors group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-auPink/30 rounded-full blur-2xl -mr-10 -mt-10 transition-transform group-hover:scale-150 mix-blend-multiply dark:mix-blend-normal"></div>
+                    <div class="text-4xl mb-6 opacity-30 font-bold">03</div>
+                    <h3 class="text-2xl font-bold mb-4">Reactive</h3>
+                    <p class="opacity-70 leading-relaxed">Customer support is overwhelmed, leading to slow response times and churn.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FEATURES SECTION -->
+        <section id="services" class="max-w-7xl mx-auto mb-32 space-y-8">
+            
+            <!-- Feature 1 -->
+            <div class="glass-card p-12 rounded-[2rem] grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative overflow-hidden">
+                <!-- BG Gradient Accent -->
+                <div class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-auTeal/20 to-transparent opacity-50"></div>
+                
+                <div class="relative z-10">
+                    <h3 class="text-auTeal font-bold tracking-widest text-sm mb-2 uppercase">Automation</h3>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6">Streamlined Operations</h2>
+                    <p class="text-lg opacity-80 mb-8">We automate repetitive manual processes using custom scripts and API integrations. This reduces operational overhead by up to 40%.</p>
+                    <ul class="space-y-4">
+                        <li class="flex items-center gap-3">
+                            <span class="w-6 h-6 rounded-full bg-auTeal/20 flex items-center justify-center text-auTeal text-xs">✓</span>
+                            Custom API Development
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-6 h-6 rounded-full bg-auTeal/20 flex items-center justify-center text-auTeal text-xs">✓</span>
+                            Cross-platform Sync
+                        </li>
+                    </ul>
+                </div>
+                <div class="relative h-64 lg:h-full flex items-center justify-center">
+                    <!-- Abstract Vis -->
+                    <div class="w-48 h-48 rounded-full border border-current opacity-20 relative animate-[spin_10s_linear_infinite]">
+                        <div class="absolute inset-0 rounded-full border-t-2 border-auTeal"></div>
+                    </div>
+                    <div class="absolute w-32 h-32 rounded-full bg-auTeal blur-[50px] opacity-40"></div>
+                </div>
+            </div>
+
+            <!-- Feature 2 -->
+            <div class="glass-card p-12 rounded-[2rem] grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative overflow-hidden">
+                 <!-- BG Gradient Accent -->
+                <div class="absolute bottom-0 right-0 w-full h-1/2 bg-gradient-to-t from-auPurple/20 to-transparent opacity-50"></div>
+
+                <div class="lg:order-2 relative z-10">
+                    <h3 class="text-auPurple font-bold tracking-widest text-sm mb-2 uppercase">Warehousing</h3>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6">Centralized Data</h2>
+                    <p class="text-lg opacity-80 mb-8">Stop jumping between tabs. We unify your disparate tools into a single source of truth (SSOT). Gain real-time visibility.</p>
+                    <ul class="space-y-4">
+                        <li class="flex items-center gap-3">
+                            <span class="w-6 h-6 rounded-full bg-auPurple/20 flex items-center justify-center text-auPurple text-xs">✓</span>
+                            ETL Pipelines
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-6 h-6 rounded-full bg-auPurple/20 flex items-center justify-center text-auPurple text-xs">✓</span>
+                            Real-time Dashboards
+                        </li>
+                    </ul>
+                </div>
+                <div class="lg:order-1 relative h-64 lg:h-full flex items-center justify-center">
+                     <!-- Abstract Vis -->
+                    <div class="grid grid-cols-3 gap-2 rotate-45">
+                        <div class="w-8 h-8 rounded bg-white/10 backdrop-blur-md"></div>
+                        <div class="w-8 h-8 rounded bg-auPurple shadow-[0_0_15px_#7000FF]"></div>
+                        <div class="w-8 h-8 rounded bg-white/10 backdrop-blur-md"></div>
+                        <div class="w-8 h-8 rounded bg-white/10 backdrop-blur-md"></div>
+                        <div class="w-8 h-8 rounded bg-white/10 backdrop-blur-md"></div>
+                        <div class="w-8 h-8 rounded bg-white/10 backdrop-blur-md"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="glass-card p-12 rounded-[2rem] grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative overflow-hidden">
+                 <!-- BG Gradient Accent -->
+                <div class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-auPink/20 to-transparent opacity-50"></div>
+
+                <div class="relative z-10">
+                    <h3 class="text-auPink font-bold tracking-widest text-sm mb-2 uppercase">Intelligence</h3>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6">AI Support Agents</h2>
+                    <p class="text-lg opacity-80 mb-8">Deploy intelligent, NLP-driven AI agents that handle Tier-1 inquiries instantly. Ensure your customers feel heard 24/7.</p>
+                    <ul class="space-y-4">
+                        <li class="flex items-center gap-3">
+                            <span class="w-6 h-6 rounded-full bg-auPink/20 flex items-center justify-center text-auPink text-xs">✓</span>
+                            NLP Processing
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-6 h-6 rounded-full bg-auPink/20 flex items-center justify-center text-auPink text-xs">✓</span>
+                            Sentiment Analysis
+                        </li>
+                    </ul>
+                </div>
+                <div class="relative h-64 lg:h-full flex items-center justify-center">
+                    <!-- Abstract Vis -->
+                    <div class="w-40 h-40 rounded-full border border-current opacity-20 flex items-center justify-center relative">
+                        <div class="absolute w-full h-full rounded-full border-t border-auPink animate-spin"></div>
+                        <div class="w-20 h-20 bg-gradient-to-tr from-auPink to-auPurple rounded-full blur-md"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- METHODOLOGY -->
+        <section id="methodology" class="max-w-7xl mx-auto mb-32">
+            <h2 class="text-4xl font-bold text-center mb-16">Chaos to Clarity</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 relative">
+                 <!-- Connecting Line -->
+                <div class="hidden md:block absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-current opacity-20 to-transparent -z-10"></div>
+
+                <div class="glass-card p-6 text-center hover:-translate-y-2 transition-transform duration-300">
+                    <div class="w-12 h-12 mx-auto bg-auTeal rounded-full flex items-center justify-center font-bold text-black mb-4 shadow-[0_0_20px_rgba(0,240,255,0.4)]">1</div>
+                    <h4 class="font-bold mb-2">Discovery</h4>
+                    <p class="text-sm opacity-60">System audit & analysis.</p>
+                </div>
+                 <div class="glass-card p-6 text-center hover:-translate-y-2 transition-transform duration-300">
+                    <div class="w-12 h-12 mx-auto bg-auPurple rounded-full flex items-center justify-center font-bold text-white mb-4 shadow-[0_0_20px_rgba(112,0,255,0.4)]">2</div>
+                    <h4 class="font-bold mb-2">Strategy</h4>
+                    <p class="text-sm opacity-60">Tech stack roadmap.</p>
+                </div>
+                 <div class="glass-card p-6 text-center hover:-translate-y-2 transition-transform duration-300">
+                    <div class="w-12 h-12 mx-auto bg-auPink rounded-full flex items-center justify-center font-bold text-white mb-4 shadow-[0_0_20px_rgba(255,0,85,0.4)]">3</div>
+                    <h4 class="font-bold mb-2">Build</h4>
+                    <p class="text-sm opacity-60">Agile sprints & deploy.</p>
+                </div>
+                 <div class="glass-card p-6 text-center hover:-translate-y-2 transition-transform duration-300">
+                    <div class="w-12 h-12 mx-auto bg-white rounded-full flex items-center justify-center font-bold text-black mb-4 shadow-[0_0_20px_rgba(255,255,255,0.4)]">4</div>
+                    <h4 class="font-bold mb-2">Handoff</h4>
+                    <p class="text-sm opacity-60">Training & docs.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CASE STUDIES -->
+        <section id="case-studies" class="max-w-7xl mx-auto mb-32">
+            <h2 class="text-4xl font-bold mb-12">Proven Results</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Case 1 -->
+                <div class="glass-card p-10 hover:border-auTeal/50 transition-colors group cursor-pointer">
+                    <div class="flex justify-between items-start mb-8">
+                        <span class="px-3 py-1 rounded-full bg-auTeal/10 text-auTeal text-xs font-bold uppercase tracking-wider">Logistics</span>
+                        <span class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-auTeal to-auBlue">-32%</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2">Global Dashboard</h3>
+                    <p class="opacity-70 mb-6">Unified data lake with predictive shipping analytics.</p>
+                    <div class="h-1 w-full bg-current opacity-10 rounded-full overflow-hidden">
+                        <div class="h-full bg-auTeal w-0 group-hover:w-full transition-all duration-700 ease-out"></div>
+                    </div>
+                </div>
+
+                <!-- Case 2 -->
+                <div class="glass-card p-10 hover:border-auPink/50 transition-colors group cursor-pointer">
+                    <div class="flex justify-between items-start mb-8">
+                        <span class="px-3 py-1 rounded-full bg-auPink/10 text-auPink text-xs font-bold uppercase tracking-wider">FinTech</span>
+                        <span class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-auPink to-auPurple">60%</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2">CRM Integration</h3>
+                    <p class="opacity-70 mb-6">Automated KYC pipeline streamlining onboarding.</p>
+                    <div class="h-1 w-full bg-current opacity-10 rounded-full overflow-hidden">
+                        <div class="h-full bg-auPink w-0 group-hover:w-full transition-all duration-700 ease-out"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section id="contact" class="max-w-4xl mx-auto mb-32 text-center">
+            <div class="glass-card p-16 rounded-[3rem] relative overflow-hidden">
+                <!-- Glow -->
+                <div class="absolute inset-0 bg-gradient-to-r from-auTeal/20 via-auPurple/20 to-auPink/20 blur-3xl -z-10"></div>
+
+                <h2 class="text-5xl font-bold mb-8">Ready to Modernize?</h2>
+                <p class="text-xl opacity-80 mb-10 max-w-xl mx-auto">Stop letting inefficiencies hold you back. Let’s build a custom roadmap to streamline your operations.</p>
+                
+                <form class="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto" onsubmit="event.preventDefault()">
+                    <input type="email" placeholder="Enter work email..." class="w-full px-6 py-4 rounded-full bg-white/10 border border-white/20 focus:outline-none focus:border-auTeal focus:bg-white/20 transition-all placeholder-current opacity-70">
+                    <button class="px-8 py-4 rounded-full bg-white text-black font-bold hover:bg-auTeal hover:scale-105 transition-all">
+                        Initialize
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="glass-card rounded-t-[3rem] mt-auto pt-16 pb-8 border-b-0 mx-4 md:mx-8">
+            <div class="max-w-7xl mx-auto px-8 grid grid-cols-1 md:grid-cols-4 gap-12 text-sm opacity-80">
+                <div>
+                     <a href="#" class="text-2xl font-bold mb-4 block">dsAI</a>
+                    <p class="mb-4">Atmospheric digital solutions.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4 uppercase">Services</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-auTeal transition-colors">Automation</a></li>
+                        <li><a href="#" class="hover:text-auTeal transition-colors">Warehousing</a></li>
+                        <li><a href="#" class="hover:text-auTeal transition-colors">AI Support</a></li>
+                    </ul>
+                </div>
+                <div>
+                     <h4 class="font-bold mb-4 uppercase">Company</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-auPurple transition-colors">About</a></li>
+                        <li><a href="#" class="hover:text-auPurple transition-colors">Careers</a></li>
+                    </ul>
+                </div>
+                 <div>
+                     <h4 class="font-bold mb-4 uppercase">Legal</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-auPink transition-colors">Privacy</a></li>
+                        <li><a href="#" class="hover:text-auPink transition-colors">Terms</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="max-w-7xl mx-auto px-8 mt-12 pt-8 border-t border-white/10 flex justify-between items-center text-xs opacity-60">
+                <div>© 2025 dsAI. All Rights Reserved.</div>
+                <div class="flex gap-4">
+                    <span>SOC2 Certified</span>
+                </div>
+            </div>
+        </footer>
+
+    </main>
+
+    <script>
+        // Toggle Theme
+        function toggleTheme() {
+            const html = document.documentElement;
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                localStorage.theme = 'light';
+                updateMaterials(false);
+            } else {
+                html.classList.add('dark');
+                localStorage.theme = 'dark';
+                updateMaterials(true);
+            }
+        }
+        
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+
+        // THREE.JS - Flowing Aurora Waves
+        let scene, camera, renderer, particles;
+        const container = document.getElementById('canvas-container');
+
+        function initThree() {
+            if (!container) return;
+
+            scene = new THREE.Scene();
+            
+            const aspect = container.clientWidth / container.clientHeight;
+            camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
+            camera.position.z = 100;
+            camera.position.y = 50;
+            camera.lookAt(0,0,0);
+
+            renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            container.appendChild(renderer.domElement);
+
+            // Particles moving in sine waves
+            const particleCount = 1000;
+            const geometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(particleCount * 3);
+            const colors = new Float32Array(particleCount * 3);
+            
+            const color1 = new THREE.Color(0x00F0FF); // Teal
+            const color2 = new THREE.Color(0xFF0055); // Pink
+            const color3 = new THREE.Color(0x7000FF); // Purple
+
+            for(let i = 0; i < particleCount; i++) {
+                const x = (i / particleCount) * 200 - 100;
+                const y = 0;
+                const z = (Math.random() - 0.5) * 50;
+                
+                positions[i*3] = x;
+                positions[i*3+1] = y;
+                positions[i*3+2] = z;
+
+                // Gradient color mix
+                const mixedColor = color1.clone().lerp(color2, i/particleCount);
+                if(i > particleCount/2) mixedColor.lerp(color3, (i - particleCount/2) / (particleCount/2));
+                
+                colors[i*3] = mixedColor.r;
+                colors[i*3+1] = mixedColor.g;
+                colors[i*3+2] = mixedColor.b;
+            }
+
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+            const material = new THREE.PointsMaterial({
+                size: 0.8,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.8,
+                blending: THREE.AdditiveBlending
+            });
+
+            particles = new THREE.Points(geometry, material);
+            scene.add(particles);
+
+            window.addEventListener('resize', onWindowResize, false);
+            animate();
+        }
+
+        function updateMaterials(isDark) {
+             // In Aurora UI, the light mode might just be brighter, but particles can stay glowing
+        }
+
+        function onWindowResize() {
+            if (!container || !camera || !renderer) return;
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height);
+        }
+
+        let time = 0;
+        function animate() {
+            requestAnimationFrame(animate);
+            time += 0.005;
+
+            if(particles) {
+                const positions = particles.geometry.attributes.position.array;
+                
+                for(let i = 0; i < positions.length / 3; i++) {
+                    // Sine wave motion
+                    const x = positions[i*3];
+                    // Y position based on sine of X + time
+                    positions[i*3+1] = Math.sin(x * 0.05 + time) * 10 + Math.sin(x * 0.1 + time * 2) * 5;
+                    // Z subtle shift
+                    positions[i*3+2] += Math.sin(time + i) * 0.02;
+                }
+                
+                particles.geometry.attributes.position.needsUpdate = true;
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('load', initThree);
+    </script>
+</body>
 </html>

@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 /* Custom utility for specific styles that are hard to do with just standard Tailwind utility classes */
 @layer base {

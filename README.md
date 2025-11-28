@@ -46,187 +46,184 @@ View your app in AI Studio: https://ai.studio/apps/drive/1y46-38new1w4Hki4k-txME
 
 ### **1. Header / Navigation**
 
-* **Elements:**
-
-  * Logo / brand mark
-  * Primary navigation links (Home, Features, Pricing, About, Contact)
-  * Optional: CTA button (e.g., “Get Started”)
-* **Notes:**
-
-  * Keep it sticky or floating for better demo of interactive effects.
-  * Can experiment with colors, typography, and spacing per style.
-
----
-
-### **2. Hero Section**
-
-* **Elements:**
-
-  * Headline / tagline (main value proposition)
-  * Subheadline / supporting text
-  * Primary CTA button (e.g., “Sign Up”)
-  * Optional illustration, product image, or animation
-* **Notes:**
-
-  * Big typography + visual hierarchy.
-  * Great place to test style-specific fonts, gradients, and animation effects.
-
----
-
-### **3. Features / Benefits Section**
-
-* **Elements:**
-
-  * 3–4 feature cards with icon or image, title, short description
-  * Optional: interactive hover effects
-* **Notes:**
-
-  * Layout can be grid or horizontal carousel.
-  * Card shape, shadow, or borders can define different UI/UX styles.
-
----
-
-### **4. Showcase / Gallery Section**
-
-* **Elements:**
-
-  * Image gallery, product screenshots, or example projects
-  * Optional: hover effects or lightbox interactions
-* **Notes:**
-
-  * Flexible section for experimenting with layouts: bento grid, masonry, or overlapping Y2K style.
-
----
-
-### **5. Testimonials / Social Proof Section**
-
-* **Elements:**
-
-  * Quote cards or user reviews
-  * User avatars or logos of clients
-* **Notes:**
-
-  * Can play with shapes, borders, shadows, or animation to show style variations.
-
----
-
-### **6. Call-to-Action Section**
-
-* **Elements:**
-
-  * Headline
-  * Supporting text
-  * Primary CTA button
-* **Notes:**
-
-  * Usually at the bottom or sticky to show conversion-focused design.
-  * Great for testing micro-interactions and hover effects per style.
-
----
-
-### **7. Footer**
-
-* **Elements:**
-
-  * Navigation links (repeat or secondary)
-  * Social media icons
-  * Copyright / legal info
-* **Notes:**
-
-  * Can experiment with minimalistic bento style, gradient aurora style, or vibrant color style.
-
-### **1. Header / Navigation**
-
-*   **Logo:** dsAI
+*   **Logo:** dsAI (Alt Text: dsAI - Data Solutions & Artificial Intelligence)
 *   **Navigation Links:**
-    *   Solutions
-    *   Case Studies
-    *   Methodology
-    *   About Us
+    *   **Solutions** (Dropdown Menu: Operational Automation, Data Warehousing, AI Support, Legacy Modernization)
+    *   **Case Studies** (Dropdown Menu: Fintech, Healthcare, Logistics, Retail)
+    *   **Methodology**
+    *   **Company** (About Us, Careers, Partners)
+    *   **Resources** (Blog, Whitepapers, API Docs)
 *   **Secondary Link:** Client Portal Login
+*   **Utility Links:** Language (EN/ES/FR), Support
 *   **Primary CTA Button:** Book a Consultation
 
 ---
 
 ### **2. Hero Section**
 
-*   **Eyebrow Text:** Intelligent Business Transformation
-*   **Headline (H1):** Your Operations, Streamlined. Your Data, Centralized.
-*   **Subheadline (H2):** dsAI delivers custom digital solutions that eliminate silos and elevate your customer support. We build the infrastructure your business needs to scale without the growing pains.
+*   **Eyebrow Text:** Intelligent Business Transformation for the Modern Enterprise
+*   **Headline (H1):** Your Operations, Streamlined. Your Data, Centralized. Your Future, Secured.
+*   **Subheadline (H2):** dsAI delivers custom digital solutions that eliminate silos and elevate your customer support. We build the scalable infrastructure your business needs to grow without the growing pains—bridging the gap between legacy systems and AI-driven efficiency.
+*   **Key Value Bullets (Under Subheadline):**
+    *   ✓ Reduce operational overhead by 40%
+    *   ✓ Unified data sources for real-time intelligence
+    *   ✓ Enterprise-grade security & compliance
 *   **Primary CTA Button:** Get Your Custom Strategy
 *   **Secondary Link:** Explore Our Services →
-*   **Social Proof Text:** Empowering enterprise teams at **LogisticsCo**, **FinTech Corp**, and **MedSafe**.
+*   **Visual Asset Description:** A dynamic, abstract 3D visualization showing data nodes connecting to form a central shield, representing protection and centralization.
+*   **Social Proof Bar:**
+    *   **Text:** Trusted by forward-thinking enterprise teams:
+    *   **Logos:** LogisticsCo, FinTech Corp, MedSafe, RetailGiant, GlobalEnergy.
 
 ---
 
-### **3. Features / Benefits Section**
+### **3. Problem & Solution (New Section)**
+
+*   **Section Heading:** The Efficiency Gap
+*   **Subheading:** Why high-growth companies hit a ceiling.
+*   **Problem Grid:**
+    *   **Item 1:** **Data Silos:** "Critical customer data is trapped in disconnected tools, leading to blind spots in decision-making."
+    *   **Item 2:** **Manual Bottlenecks:** "Highly skilled talent is wasted on copy-paste data entry and repetitive admin tasks."
+    *   **Item 3:** **Reactive Support:** "Customer support is overwhelmed, leading to slow response times and churn."
+*   **Transition Element:** *“dsAI bridges the gap with intelligent architecture.”*
+
+---
+
+### **4. Features / Benefits Section**
 
 *   **Section Heading:** The dsAI Advantage
+*   **Intro Text:** We don't just patch software; we re-engineer your digital foundation using a three-pillar approach.
 *   **Feature 1:**
-    *   **Title:** Streamlined Operations
-    *   **Description:** We automate repetitive manual processes, reducing operational overhead by up to 40% and freeing your team for high-value work.
+    *   **Title:** Streamlined Operations & Workflow Automation
+    *   **Detailed Description:** We automate repetitive manual processes using custom scripts and API integrations. This reduces operational overhead by up to 40% and frees your team for high-value strategic work.
+    *   **Key Capabilities:**
+        *   Custom API development
+        *   Cross-platform synchronization
+        *   Automated reporting & invoicing
 *   **Feature 2:**
-    *   **Title:** Centralized Data
-    *   **Description:** Stop jumping between tabs. We unify your disparate tools into a single source of truth for better decision-making.
+    *   **Title:** Centralized Data Warehousing
+    *   **Detailed Description:** Stop jumping between tabs. We unify your disparate tools (CRM, ERP, Marketing) into a single source of truth (SSOT). Gain real-time visibility into KPIs for better decision-making.
+    *   **Key Capabilities:**
+        *   ETL (Extract, Transform, Load) pipelines
+        *   Real-time dashboard visualization
+        *   Legacy database migration
 *   **Feature 3:**
-    *   **Title:** Elevated Support
-    *   **Description:** Deploy intelligent AI agents that handle Tier-1 inquiries instantly, ensuring your customers feel heard 24/7.
+    *   **Title:** Elevated AI Support Agents
+    *   **Detailed Description:** Deploy intelligent, NLP-driven AI agents that handle Tier-1 inquiries instantly. Ensure your customers feel heard 24/7 while escalating complex issues to human agents seamlessly.
+    *   **Key Capabilities:**
+        *   Natural Language Processing (NLP)
+        *   Multi-channel deployment (Web, SMS, Email)
+        *   Sentiment analysis & routing
 
 ---
 
-### **4. Showcase / Gallery Section**
+### **5. Methodology / How We Work (New Section)**
+
+*   **Section Headline:** From Chaos to Clarity in 4 Steps
+*   **Step 1:** **Discovery & Audit:** We dive deep into your current stack to identify bottlenecks and security vulnerabilities.
+*   **Step 2:** **Architecture Strategy:** We design a custom roadmap, selecting the right tech stack that fits your budget and scalability goals.
+*   **Step 3:** **Agile Implementation:** We build in two-week sprints, giving you visibility and the ability to pivot as the solution takes shape.
+*   **Step 4:** **Training & Handoff:** We don't just leave; we train your team and provide documentation to ensure long-term adoption.
+
+---
+
+### **6. Showcase / Gallery Section**
 
 *   **Section Headline:** Proven Results
 *   **Subheadline:** See how we’ve solved complex challenges for industry leaders.
-*   **Project 1 Label:** **Global Logistics Dashboard** – Centralizing freight data across 3 continents.
-*   **Project 2 Label:** **FinTech CRM Integration** – Streamlining client onboarding by 60%.
-*   **Project 3 Label:** **Retail AI Support Bot** – Elevating customer response times to under 30 seconds.
-*   **Project 4 Label:** **Healthcare Compliance Portal** – Automating internal operational audits.
+*   **Case Study 1:**
+    *   **Label:** **Global Logistics Dashboard**
+    *   **Challenge:** Fragmented freight data across 3 continents.
+    *   **Solution:** Unified data lake with predictive shipping analytics.
+    *   **Result:** **32% reduction in shipping delays.**
+    *   **Link:** Read Case Study →
+*   **Case Study 2:**
+    *   **Label:** **FinTech CRM Integration**
+    *   **Challenge:** Slow client onboarding (avg. 4 days).
+    *   **Solution:** Automated KYC and document verification pipeline.
+    *   **Result:** **Streamlined onboarding by 60% (down to 1.5 days).**
+    *   **Link:** Read Case Study →
+*   **Case Study 3:**
+    *   **Label:** **Retail AI Support Bot**
+    *   **Challenge:** Overwhelmed support during holiday peaks.
+    *   **Solution:** AI agent handling FAQs and order tracking.
+    *   **Result:** **Response times under 30 seconds; 70% ticket deflection.**
+    *   **Link:** Read Case Study →
+*   **Case Study 4:**
+    *   **Label:** **Healthcare Compliance Portal**
+    *   **Challenge:** Manual risk of HIPAA non-compliance.
+    *   **Solution:** Automated internal operational audits and reporting.
+    *   **Result:** **100% Audit Readiness Score.**
+    *   **Link:** Read Case Study →
 
 ---
 
-### **5. Testimonials / Social Proof Section**
+### **7. Testimonials / Social Proof Section**
 
 *   **Section Headline:** Partners in Growth
+*   **Review Platform Badges:** 4.9/5 on Clutch | 5/5 on G2 Crowd
 *   **Testimonial 1:**
-    *   **Quote:** "Before dsAI, our customer data was scattered across five different tools. Now, it's centralized, and our response times dropped by half."
+    *   **Quote:** "Before dsAI, our customer data was scattered across five different tools. Now, it's centralized, and our response times dropped by half. The ROI was evident within the first 3 months."
     *   **Author:** James T., COO at FinServe
+    *   **Project Context:** Data Centralization Project
 *   **Testimonial 2:**
-    *   **Quote:** "The custom automation solution dsAI built for us saved our team 20 hours a week on manual entry alone."
+    *   **Quote:** "The custom automation solution dsAI built for us saved our team 20 hours a week on manual entry alone. It allowed us to scale our headcount without sacrificing quality."
     *   **Author:** Linda K., Director of Operations at LogiMove
+    *   **Project Context:** Workflow Automation
 *   **Testimonial 3:**
-    *   **Quote:** "Professional, technical, and deeply understanding of our business model. dsAI isn't just a vendor; they are partners."
+    *   **Quote:** "Professional, technical, and deeply understanding of our business model. dsAI isn't just a vendor; they are partners who care about the outcome as much as we do."
     *   **Author:** Marcus R., CTO at HealthFlow
+    *   **Project Context:** Legacy System Modernization
 
 ---
 
-### **6. Call-to-Action Section**
+### **8. FAQ Section (New Section)**
+
+*   **Headline:** Common Questions
+*   **Q1:** How long does a typical implementation take?
+    *   **A:** Most initial pilot projects are live within 4-6 weeks, with full enterprise rollouts taking 3-4 months depending on complexity.
+*   **Q2:** Do you work with legacy on-premise systems?
+    *   **A:** Yes. We specialize in "wrapping" legacy systems with modern APIs so you can innovate without a full rewrite.
+*   **Q3:** How do you handle data security?
+    *   **A:** We are SOC2 compliant and design all architectures with "Security by Design" principles, ensuring end-to-end encryption and strict access controls.
+
+---
+
+### **9. Call-to-Action Section**
 
 *   **Headline:** Ready to modernize your business?
 *   **Supporting Text:** Stop letting inefficiencies hold you back. Let’s build a custom roadmap to streamline your operations and unlock your data’s potential.
 *   **Primary CTA Button:** Schedule a Discovery Call
-*   **Micro-copy:** Free initial consultation. No commitment required.
+*   **Secondary Action:** Join our "Future of Ops" Newsletter.
+*   **Input Field:** [ Enter your work email ] [ Subscribe ]
+*   **Micro-copy:** Free initial consultation. No commitment required. You will receive a response within 24 hours.
 
 ---
 
-### **7. Footer**
+### **10. Footer**
 
 *   **Brand Column:**
     *   **Logo:** dsAI
     *   **Tagline:** Custom digital solutions for the modern enterprise.
-    *   **Contact:** hello@dsai.com
+    *   **Address:** 123 Innovation Dr, Tech City, TC 94000
+    *   **Contact:** hello@dsai.com | +1 (555) 123-4567
 *   **Services Column:**
     *   Operational Automation
     *   Data Warehousing
     *   AI Customer Support
     *   Legacy Modernization
+    *   Cloud Migration
 *   **Company Column:**
     *   About dsAI
-    *   Leadership
-    *   Careers
+    *   Leadership Team
+    *   Careers (We're Hiring!)
     *   Case Studies
+    *   Press Kit
 *   **Legal Column:**
     *   Privacy Policy
-    *   Data Security
+    *   Data Security & Compliance
     *   Terms of Service
-*   **Copyright:** © 2024 dsAI. All rights reserved.
+    *   Cookie Preferences
+*   **Social Icons:** LinkedIn, Twitter/X, GitHub, YouTube
+*   **Certifications:** SOC2 Certified Badge, ISO 27001 Badge
+*   **Copyright:** © 2025 dsAI. All rights reserved.
