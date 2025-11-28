@@ -1,2 +1,451 @@
-<h1>Minimalism Demo Content</h1>
-<p>This content is loaded from an external HTML file.</p>
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swiss Minimalist Landing Page</title>
+
+    <!-- Tailwind with Configuration -->
+    <!-- Local Tailwind CSS -->
+    <link rel="stylesheet" href="/src/index.css">
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --swiss-red: #FF3B30;
+        }
+
+        body {
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Typography */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            letter-spacing: -0.04em;
+            font-weight: 800;
+        }
+
+        /* Custom Utilities */
+        /* Light Mode Grid */
+        .swiss-grid-lines {
+            background-size: 100px 100px;
+            background-image:
+                linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+        }
+
+        /* Dark Mode Grid */
+        .dark .swiss-grid-lines {
+            background-image:
+                linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+        }
+
+        .hover-underline-animation {
+            display: inline-block;
+            position: relative;
+        }
+
+        .hover-underline-animation::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--swiss-red);
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+
+        .hover-underline-animation:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+    </style>
+</head>
+
+<body
+    class="swiss-grid-lines bg-white text-offBlack dark:bg-neutral-950 dark:text-white transition-colors duration-500">
+
+    <!-- 1. Header / Navigation -->
+
+
+    <!-- 2. Hero Section -->
+    <section id="hero" class="pt-32 pb-20 min-h-screen flex items-center relative overflow-hidden">
+        <div class="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
+            <!-- Text Content -->
+            <div class="z-10">
+                <span
+                    class="inline-block py-1 px-3 border border-black dark:border-white text-xs font-bold uppercase tracking-widest mb-6 transition-colors">
+                    Est. 2024
+                </span>
+                <h1 class="text-7xl md:text-9xl leading-[0.9] mb-8">
+                    LESS<br>
+                    BUT<br>
+                    <span class="text-swissRed">BETTER.</span>
+                </h1>
+                <p
+                    class="text-xl md:text-2xl font-light text-gray-600 dark:text-gray-400 max-w-md mb-10 leading-relaxed transition-colors">
+                    Essentialism in digital form. We strip away the unnecessary to reveal the architecture of
+                    information.
+                </p>
+                <div class="flex items-center space-x-6">
+                    <a href="#contact"
+                        class="px-8 py-4 bg-black text-white dark:bg-white dark:text-black font-bold uppercase tracking-widest text-sm hover:bg-swissRed hover:text-white dark:hover:bg-swissRed dark:hover:text-white transition-all">
+                        Start Project
+                    </a>
+                    <a href="#features"
+                        class="flex items-center space-x-2 font-bold uppercase text-xs tracking-widest group">
+                        <span>Explore</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Abstract Visual (CSS Composition) -->
+            <div class="relative h-[600px] w-full hidden lg:block select-none pointer-events-none">
+                <!-- Red Circle -->
+                <div
+                    class="absolute top-10 right-10 w-64 h-64 bg-swissRed rounded-full mix-blend-multiply dark:mix-blend-normal opacity-90 animate-[pulse_8s_ease-in-out_infinite]">
+                </div>
+                <!-- Black Square (Inverts to White in Dark Mode) -->
+                <div
+                    class="absolute top-40 right-40 w-64 h-64 bg-black dark:bg-white mix-blend-multiply dark:mix-blend-difference opacity-80 transition-colors duration-500">
+                </div>
+                <!-- Outlined Circle -->
+                <div
+                    class="absolute bottom-20 right-20 w-48 h-48 border-[20px] border-gray-200 dark:border-neutral-800 rounded-full transition-colors duration-500">
+                </div>
+                <!-- Typography decoration -->
+                <div
+                    class="absolute bottom-0 right-0 transform -rotate-90 origin-bottom-right text-9xl font-bold text-gray-100 dark:text-neutral-800 -z-10 transition-colors duration-500">
+                    SWISS
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Features Section -->
+    <section id="features" class="py-24 border-t border-black dark:border-white transition-colors duration-500">
+        <div class="container mx-auto px-6">
+            <div class="mb-16">
+                <h2 class="text-5xl font-bold mb-4">PRINCIPLES</h2>
+                <div class="w-24 h-2 bg-swissRed"></div>
+            </div>
+
+            <div
+                class="grid grid-cols-1 md:grid-cols-3 gap-0 border-l border-t border-black dark:border-white transition-colors duration-500">
+                <!-- Feature 1 -->
+                <div
+                    class="group border-r border-b border-black dark:border-white p-12 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors duration-300">
+                    <div class="mb-8">
+                        <i data-lucide="grid-3x3"
+                            class="w-12 h-12 stroke-1 group-hover:text-swissRed transition-colors"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 uppercase">Modular Grid</h3>
+                    <p class="text-sm leading-relaxed opacity-80">
+                        Structured layouts ensuring logical organization of content. Order brings clarity to chaos.
+                    </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div
+                    class="group border-r border-b border-black dark:border-white p-12 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors duration-300">
+                    <div class="mb-8">
+                        <i data-lucide="type"
+                            class="w-12 h-12 stroke-1 group-hover:text-swissRed transition-colors"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 uppercase">Typography</h3>
+                    <p class="text-sm leading-relaxed opacity-80">
+                        Type is the primary vehicle of communication. We use scale and weight to create hierarchy.
+                    </p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div
+                    class="group border-r border-b border-black dark:border-white p-12 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors duration-300">
+                    <div class="mb-8">
+                        <i data-lucide="maximize"
+                            class="w-12 h-12 stroke-1 group-hover:text-swissRed transition-colors"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 uppercase">Negative Space</h3>
+                    <p class="text-sm leading-relaxed opacity-80">
+                        White space is an active design element, not a passive background. It lets content breathe.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Showcase / Gallery (Inverted Theme Block) -->
+    <!-- Light Mode: Black Block. Dark Mode: White Block. -->
+    <section id="showcase"
+        class="py-24 bg-black text-white dark:bg-white dark:text-black transition-colors duration-500">
+        <div class="container mx-auto px-6">
+            <div class="flex justify-between items-end mb-16">
+                <h2 class="text-5xl font-bold">SELECTED WORKS</h2>
+                <span class="text-xs font-mono border border-white dark:border-black px-2 py-1 transition-colors">INDEX
+                    01-04</span>
+            </div>
+
+            <!-- Masonry-style Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+                <!-- Item 1 (Large) -->
+                <div class="group cursor-pointer relative overflow-hidden">
+                    <div class="bg-white/10 dark:bg-black/10 aspect-[4/5] relative overflow-hidden transition-colors">
+                        <!-- Placeholder Art 1 -->
+                        <div
+                            class="absolute inset-0 flex items-center justify-center group-hover:bg-swissRed transition-colors duration-500">
+                            <div
+                                class="w-32 h-32 border-4 border-white dark:border-black rounded-full transition-colors">
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="mt-4 flex justify-between items-start border-t border-white/20 dark:border-black/20 pt-4 transition-colors">
+                        <div>
+                            <h3 class="text-xl font-bold uppercase">Project Alpha</h3>
+                            <p class="text-xs text-gray-400 dark:text-gray-600 mt-1">Branding / Identity</p>
+                        </div>
+                        <span class="text-2xl font-light">01</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-8">
+                    <!-- Item 2 -->
+                    <div class="group cursor-pointer">
+                        <div
+                            class="bg-white/10 dark:bg-black/10 aspect-video relative overflow-hidden transition-colors">
+                            <!-- Placeholder Art 2 -->
+                            <div
+                                class="absolute inset-0 flex items-center justify-center group-hover:bg-swissRed transition-colors duration-500">
+                                <div
+                                    class="w-full h-1/2 border-y-4 border-white dark:border-black transform -rotate-12 scale-125 transition-colors">
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="mt-4 flex justify-between items-start border-t border-white/20 dark:border-black/20 pt-4 transition-colors">
+                            <div>
+                                <h3 class="text-xl font-bold uppercase">Project Beta</h3>
+                                <p class="text-xs text-gray-400 dark:text-gray-600 mt-1">Editorial Design</p>
+                            </div>
+                            <span class="text-2xl font-light">02</span>
+                        </div>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="group cursor-pointer">
+                        <div
+                            class="bg-white/10 dark:bg-black/10 aspect-video relative overflow-hidden transition-colors">
+                            <!-- Placeholder Art 3 -->
+                            <div
+                                class="absolute inset-0 flex items-center justify-center group-hover:bg-swissRed transition-colors duration-500">
+                                <div class="w-20 h-20 bg-white dark:bg-black transition-colors"></div>
+                            </div>
+                        </div>
+                        <div
+                            class="mt-4 flex justify-between items-start border-t border-white/20 dark:border-black/20 pt-4 transition-colors">
+                            <div>
+                                <h3 class="text-xl font-bold uppercase">Project Gamma</h3>
+                                <p class="text-xs text-gray-400 dark:text-gray-600 mt-1">Architecture</p>
+                            </div>
+                            <span class="text-2xl font-light">03</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Testimonials -->
+    <section id="testimonials" class="py-24 bg-white dark:bg-neutral-950 relative transition-colors duration-500">
+        <div
+            class="absolute left-0 top-0 h-full w-1/3 bg-gray-50 dark:bg-neutral-900 -z-10 hidden lg:block transition-colors duration-500">
+        </div>
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                <div class="lg:pt-24">
+                    <h2 class="text-5xl font-bold mb-6">DIALOGUE</h2>
+                    <p class="text-lg text-gray-500 dark:text-gray-400 max-w-sm">
+                        Design is not just about what we create, but how it functions for the people who use it.
+                    </p>
+                </div>
+
+                <div class="space-y-12">
+                    <!-- Review Card -->
+                    <div class="border-l-4 border-black dark:border-white pl-8 py-2 transition-colors">
+                        <blockquote class="text-2xl md:text-3xl font-bold leading-tight mb-6">
+                            "The clarity of their vision cut through the noise. It wasn't just design; it was
+                            problem-solving in its purest form."
+                        </blockquote>
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-12 h-12 bg-gray-200 dark:bg-neutral-800 rounded-full overflow-hidden flex items-center justify-center transition-colors">
+                                <i data-lucide="user" class="w-6 h-6 text-gray-500"></i>
+                            </div>
+                            <div>
+                                <cite class="not-italic font-bold uppercase block text-sm">Sarah Jenkins</cite>
+                                <span
+                                    class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-widest">Director,
+                                    ArtMuseum</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Review Card -->
+                    <div class="border-l-4 border-swissRed pl-8 py-2">
+                        <blockquote class="text-2xl md:text-3xl font-bold leading-tight mb-6">
+                            "Radically simple. Effectively complex. They understood that white space is a luxury."
+                        </blockquote>
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-12 h-12 bg-gray-200 dark:bg-neutral-800 rounded-full overflow-hidden flex items-center justify-center transition-colors">
+                                <i data-lucide="user" class="w-6 h-6 text-gray-500"></i>
+                            </div>
+                            <div>
+                                <cite class="not-italic font-bold uppercase block text-sm">Marcus Heilner</cite>
+                                <span
+                                    class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-widest">Architect,
+                                    Zürich</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Call to Action -->
+    <section id="contact" class="py-32 bg-swissRed text-white text-center">
+        <div class="container mx-auto px-6">
+            <h2 class="text-6xl md:text-8xl font-black mb-8 tracking-tighter">
+                LET'S BUILD<br>ORDER.
+            </h2>
+            <p class="text-xl mb-12 max-w-2xl mx-auto font-medium">
+                Ready to strip away the non-essential? Let's create something timeless.
+            </p>
+            <button
+                class="bg-black text-white dark:bg-white dark:text-black px-10 py-5 text-sm font-bold uppercase tracking-[0.2em] hover:bg-white hover:text-black dark:hover:bg-black dark:hover:text-white transition-colors duration-300 transform hover:-translate-y-1">
+                Start collaboration
+            </button>
+        </div>
+    </section>
+
+    <!-- 7. Footer -->
+    <footer
+        class="bg-white dark:bg-neutral-950 pt-20 pb-10 border-t border-black dark:border-white transition-colors duration-500">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
+                <!-- Brand -->
+                <div class="col-span-1 md:col-span-1">
+                    <a href="#" class="text-xl font-extrabold uppercase tracking-tighter block mb-6">
+                        Grid<span class="text-swissRed">.</span>Sys
+                    </a>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 max-w-[200px]">
+                        Harnessing the power of the grid to organize the world's information.
+                    </p>
+                </div>
+
+                <!-- Links 1 -->
+                <div>
+                    <h4 class="font-bold text-xs uppercase tracking-widest mb-6 text-gray-400 dark:text-neutral-500">
+                        Sitemap</h4>
+                    <ul class="space-y-4 text-sm font-bold uppercase">
+                        <li><a href="#" class="hover:text-swissRed transition-colors">Home</a></li>
+                        <li><a href="#" class="hover:text-swissRed transition-colors">About</a></li>
+                        <li><a href="#" class="hover:text-swissRed transition-colors">Journal</a></li>
+                        <li><a href="#" class="hover:text-swissRed transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Links 2 -->
+                <div>
+                    <h4 class="font-bold text-xs uppercase tracking-widest mb-6 text-gray-400 dark:text-neutral-500">
+                        Social</h4>
+                    <ul class="space-y-4 text-sm font-bold uppercase">
+                        <li><a href="#" class="hover:text-swissRed transition-colors">Instagram</a></li>
+                        <li><a href="#" class="hover:text-swissRed transition-colors">Behance</a></li>
+                        <li><a href="#" class="hover:text-swissRed transition-colors">LinkedIn</a></li>
+                        <li><a href="#" class="hover:text-swissRed transition-colors">Twitter / X</a></li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter -->
+                <div>
+                    <h4 class="font-bold text-xs uppercase tracking-widest mb-6 text-gray-400 dark:text-neutral-500">
+                        Updates</h4>
+                    <form class="flex border-b border-black dark:border-white pb-2 transition-colors">
+                        <input type="email" placeholder="EMAIL ADDRESS"
+                            class="w-full outline-none bg-transparent text-sm font-bold uppercase placeholder:text-gray-300 dark:text-white">
+                        <button class="text-swissRed font-bold text-lg">&rarr;</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Bottom -->
+            <div
+                class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-100 dark:border-neutral-800 transition-colors">
+                <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400 dark:text-neutral-600">
+                    &copy; 2024 Grid Systems Inc.
+                </p>
+                <div
+                    class="flex space-x-6 text-[10px] font-bold uppercase tracking-widest text-gray-400 dark:text-neutral-600 mt-4 md:mt-0">
+                    <a href="#">Privacy</a>
+                    <a href="#">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Icon Initialization
+        lucide.createIcons();
+
+        // Mobile Menu Toggle
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Dark Mode Logic
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+        const iconMoon = themeToggleBtn.querySelector('i[data-lucide="moon"]');
+        const iconSun = themeToggleBtn.querySelector('i[data-lucide="sun"]');
+
+        // Check local storage or system preference
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            htmlElement.classList.add('dark');
+        } else {
+            htmlElement.classList.remove('dark');
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            if (htmlElement.classList.contains('dark')) {
+                htmlElement.classList.remove('dark');
+                localStorage.theme = 'light';
+            } else {
+                htmlElement.classList.add('dark');
+                localStorage.theme = 'dark';
+            }
+        });
+    </script>
+</body>
+
+</html>

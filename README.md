@@ -134,3 +134,99 @@ View your app in AI Studio: https://ai.studio/apps/drive/1y46-38new1w4Hki4k-txME
 * **Notes:**
 
   * Can experiment with minimalistic bento style, gradient aurora style, or vibrant color style.
+
+### **1. Header / Navigation**
+
+*   **Logo:** dsAI
+*   **Navigation Links:**
+    *   Solutions
+    *   Case Studies
+    *   Methodology
+    *   About Us
+*   **Secondary Link:** Client Portal Login
+*   **Primary CTA Button:** Book a Consultation
+
+---
+
+### **2. Hero Section**
+
+*   **Eyebrow Text:** Intelligent Business Transformation
+*   **Headline (H1):** Your Operations, Streamlined. Your Data, Centralized.
+*   **Subheadline (H2):** dsAI delivers custom digital solutions that eliminate silos and elevate your customer support. We build the infrastructure your business needs to scale without the growing pains.
+*   **Primary CTA Button:** Get Your Custom Strategy
+*   **Secondary Link:** Explore Our Services →
+*   **Social Proof Text:** Empowering enterprise teams at **LogisticsCo**, **FinTech Corp**, and **MedSafe**.
+
+---
+
+### **3. Features / Benefits Section**
+
+*   **Section Heading:** The dsAI Advantage
+*   **Feature 1:**
+    *   **Title:** Streamlined Operations
+    *   **Description:** We automate repetitive manual processes, reducing operational overhead by up to 40% and freeing your team for high-value work.
+*   **Feature 2:**
+    *   **Title:** Centralized Data
+    *   **Description:** Stop jumping between tabs. We unify your disparate tools into a single source of truth for better decision-making.
+*   **Feature 3:**
+    *   **Title:** Elevated Support
+    *   **Description:** Deploy intelligent AI agents that handle Tier-1 inquiries instantly, ensuring your customers feel heard 24/7.
+
+---
+
+### **4. Showcase / Gallery Section**
+
+*   **Section Headline:** Proven Results
+*   **Subheadline:** See how we’ve solved complex challenges for industry leaders.
+*   **Project 1 Label:** **Global Logistics Dashboard** – Centralizing freight data across 3 continents.
+*   **Project 2 Label:** **FinTech CRM Integration** – Streamlining client onboarding by 60%.
+*   **Project 3 Label:** **Retail AI Support Bot** – Elevating customer response times to under 30 seconds.
+*   **Project 4 Label:** **Healthcare Compliance Portal** – Automating internal operational audits.
+
+---
+
+### **5. Testimonials / Social Proof Section**
+
+*   **Section Headline:** Partners in Growth
+*   **Testimonial 1:**
+    *   **Quote:** "Before dsAI, our customer data was scattered across five different tools. Now, it's centralized, and our response times dropped by half."
+    *   **Author:** James T., COO at FinServe
+*   **Testimonial 2:**
+    *   **Quote:** "The custom automation solution dsAI built for us saved our team 20 hours a week on manual entry alone."
+    *   **Author:** Linda K., Director of Operations at LogiMove
+*   **Testimonial 3:**
+    *   **Quote:** "Professional, technical, and deeply understanding of our business model. dsAI isn't just a vendor; they are partners."
+    *   **Author:** Marcus R., CTO at HealthFlow
+
+---
+
+### **6. Call-to-Action Section**
+
+*   **Headline:** Ready to modernize your business?
+*   **Supporting Text:** Stop letting inefficiencies hold you back. Let’s build a custom roadmap to streamline your operations and unlock your data’s potential.
+*   **Primary CTA Button:** Schedule a Discovery Call
+*   **Micro-copy:** Free initial consultation. No commitment required.
+
+---
+
+### **7. Footer**
+
+*   **Brand Column:**
+    *   **Logo:** dsAI
+    *   **Tagline:** Custom digital solutions for the modern enterprise.
+    *   **Contact:** hello@dsai.com
+*   **Services Column:**
+    *   Operational Automation
+    *   Data Warehousing
+    *   AI Customer Support
+    *   Legacy Modernization
+*   **Company Column:**
+    *   About dsAI
+    *   Leadership
+    *   Careers
+    *   Case Studies
+*   **Legal Column:**
+    *   Privacy Policy
+    *   Data Security
+    *   Terms of Service
+*   **Copyright:** © 2024 dsAI. All rights reserved.
