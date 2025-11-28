@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleDefinition, PaletteMode } from '../types';
 import { STYLE_THEMES } from '../styleConfigs';
 import { ArrowLeft, User, Bell, Settings, Search, Heart, Share2, Check, Sun, Moon, Contrast } from 'lucide-react';
@@ -13,6 +13,26 @@ const DemoPage: React.FC<DemoPageProps> = ({ styleDef, onBack }) => {
   const [activeTab, setActiveTab] = useState(0);
   const [toggle, setToggle] = useState(false);
   const [paletteMode, setPaletteMode] = useState<PaletteMode>('light');
+  const [htmlContent, setHtmlContent] = useState<string>('');
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      try {
+        const response = await fetch(`/demo-content/${styleDef.id}.html`);
+        if (response.ok) {
+          const text = await response.text();
+          setHtmlContent(text);
+        } else {
+          setHtmlContent('<p>Error loading content.</p>');
+        }
+      } catch (error) {
+        console.error('Failed to load demo content:', error);
+        setHtmlContent('<p>Error loading content.</p>');
+      }
+    };
+
+    fetchContent();
+  }, [styleDef.id]);
 
   // Fallback if theme is missing for a new style
   const themes = STYLE_THEMES[styleDef.id] || STYLE_THEMES['minimalism'];
@@ -109,128 +129,14 @@ const DemoPage: React.FC<DemoPageProps> = ({ styleDef, onBack }) => {
 
       {/* Main Content */}
       <main className="flex-1 p-6 md:p-12 relative z-10">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12">
-          
-          {/* Left Column: Information */}
-          <div className="lg:col-span-5 space-y-8">
-            <div className={styles.card === '' ? '' : `${styles.card} p-6`}>
-              <div className="flex items-center justify-between mb-4">
-                  <h2 className={`text-3xl font-bold ${styles.accentText}`}>Style Breakdown</h2>
-                  <span className={styles.badge}>{styles.name}</span>
-              </div>
-              
-              <p className="opacity-80 leading-relaxed mb-6">
-                {styleDef.description}
-              </p>
-              
-              <div className="space-y-4">
-                <div>
-                  <h3 className="text-sm font-bold uppercase tracking-wider opacity-60 mb-2">Color Palette</h3>
-                  <p className="text-sm opacity-90">{styleDef.colorSchemes}</p>
-                </div>
-                <div>
-                  <h3 className="text-sm font-bold uppercase tracking-wider opacity-60 mb-2">Key Features</h3>
-                  <p className="text-sm opacity-90">{styleDef.effects}</p>
-                </div>
-                <div>
-                    <h3 className="text-sm font-bold uppercase tracking-wider opacity-60 mb-2">Keywords</h3>
-                    <div className="flex flex-wrap gap-2">
-                        {styleDef.keywords.split(', ').slice(0,5).map((kw, i) => (
-                            <span key={i} className={styles.badge}>{kw}</span>
-                        ))}
-                    </div>
-                </div>
-              </div>
+        <div className="max-w-6xl mx-auto">
+          {htmlContent ? (
+            <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
+          ) : (
+            <div className="flex items-center justify-center h-64">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
             </div>
-
-            {/* Interactive Form Elements Demo */}
-            <div className={`${styles.card} p-6 space-y-6`}>
-                <h3 className={`text-xl font-bold ${styles.accentText}`}>Interactive Elements</h3>
-                <div className="space-y-4">
-                    <input type="text" placeholder="Type something..." className={styles.input} />
-                    <div className="flex flex-wrap gap-4">
-                        <button className={styles.button}>Primary Action</button>
-                        <button className={styles.buttonSecondary}>Secondary</button>
-                    </div>
-                    <div className="flex items-center gap-4 pt-2">
-                        <span className="text-sm opacity-70">Toggle:</span>
-                        <div 
-                            className={`w-12 h-6 rounded-full p-1 cursor-pointer transition-colors duration-300 flex items-center ${toggle ? 'bg-green-500' : 'bg-gray-400'}`}
-                            onClick={() => setToggle(!toggle)}
-                        >
-                            <div className={`bg-white w-4 h-4 rounded-full shadow-md transform duration-300 ${toggle ? 'translate-x-6' : 'translate-x-0'}`} />
-                        </div>
-                    </div>
-                </div>
-            </div>
-          </div>
-
-          {/* Right Column: Visual Component Demo */}
-          <div className="lg:col-span-7 space-y-6">
-            
-            {/* Main Visual Card */}
-            <div className={`relative overflow-hidden ${styles.card} min-h-[400px] flex flex-col`}>
-                {styleDef.id === 'vibrant-block' && (
-                     <div className={`absolute top-0 right-0 w-32 h-32 ${paletteMode === 'light' ? 'bg-pink-500' : 'bg-green-500'} rounded-bl-full z-0`}></div>
-                )}
-                
-                <div className="relative z-10 p-8 flex flex-col h-full">
-                    <div className="flex justify-between items-start mb-8">
-                        <div>
-                            <span className={styles.badge}>Featured</span>
-                            <h2 className={`text-4xl font-bold mt-4 mb-2 ${styles.accentText}`}>Visual Depth</h2>
-                            <p className="opacity-70 max-w-sm">Experience the nuances of {styleDef.name} through this interactive component.</p>
-                        </div>
-                        <div className={`p-3 rounded-full ${styleDef.id === 'glassmorphism' ? 'bg-white/10 backdrop-blur-md' : 'bg-transparent'}`}>
-                            <Settings className="w-6 h-6 animate-spin-slow opacity-80" />
-                        </div>
-                    </div>
-
-                    <div className="mt-auto">
-                        <div className="grid grid-cols-3 gap-4 mb-8">
-                             {[1, 2, 3].map((item) => (
-                                 <div 
-                                    key={item} 
-                                    className={`aspect-square rounded-lg flex items-center justify-center cursor-pointer transition-all ${activeTab === item ? 'ring-2 ring-offset-2 ring-current opacity-100' : 'opacity-50 hover:opacity-80'} ${styleDef.id === 'glassmorphism' ? 'bg-white/20' : 'bg-current'}`}
-                                    onClick={() => setActiveTab(item)}
-                                    style={{ backgroundColor: activeTab === item ? '' : 'rgba(128,128,128,0.2)' }}
-                                 >
-                                     <Heart className={`w-6 h-6 ${activeTab === item ? 'fill-current' : ''}`} />
-                                 </div>
-                             ))}
-                        </div>
-                        
-                        <div className="flex justify-between items-center border-t border-current/10 pt-6">
-                            <div className="flex -space-x-3">
-                                {[1,2,3,4].map(i => (
-                                    <img key={i} src={`https://picsum.photos/id/${i+50}/50/50`} className="w-10 h-10 rounded-full border-2 border-white object-cover" alt="User" />
-                                ))}
-                                <div className="w-10 h-10 rounded-full bg-gray-800 text-white flex items-center justify-center text-xs border-2 border-white z-10">+42</div>
-                            </div>
-                            <button className={`${styles.button} !py-2 !px-4 text-sm flex items-center gap-2`}>
-                                <Share2 size={16} /> Share
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* List Item Demos */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {[1, 2].map((item) => (
-                    <div key={item} className={`${styles.card} p-4 flex items-center gap-4 group cursor-pointer`}>
-                        <div className={`w-12 h-12 rounded-lg flex items-center justify-center shrink-0 ${styleDef.id === 'minimalism' ? 'bg-gray-100' : 'bg-black/5'}`}>
-                            <Check className="w-6 h-6 opacity-60" />
-                        </div>
-                        <div>
-                            <h4 className="font-bold opacity-90 group-hover:text-blue-500 transition-colors">Feature Item {item}</h4>
-                            <p className="text-xs opacity-60 mt-1">Click to view details</p>
-                        </div>
-                    </div>
-                ))}
-            </div>
-
-          </div>
+          )}
         </div>
       </main>
     </div>

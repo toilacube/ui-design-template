@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Scrapbook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        /* Import Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Patrick+Hand&family=Permanent+Marker&display=swap');
+
+        /* Custom Paper Background Pattern */
+        body {
+            background-color: #f4e4bc;
+            background-image: 
+                linear-gradient(#e6d5aa 1px, transparent 1px),
+                linear-gradient(90deg, #e6d5aa 1px, transparent 1px);
+            background-size: 20px 20px;
+            font-family: 'Courier Prime', monospace;
+            overflow-x: hidden;
+        }
+
+        /* Paper Texture Overlay (Grain) */
+        .texture-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 50;
+        }
+
+        /* Washi Tape Effect */
+        .washi-tape {
+            background-color: rgba(255, 100, 100, 0.6);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            backdrop-filter: blur(2px);
+            position: absolute;
+            z-index: 20;
+        }
+
+        /* Torn Paper Edge Effect */
+        .torn-paper {
+            clip-path: polygon(
+                0% 0%, 100% 0%, 100% 90%, 
+                98% 92%, 96% 90%, 94% 93%, 92% 90%, 90% 92%, 
+                88% 90%, 86% 93%, 84% 90%, 82% 92%, 80% 90%,
+                78% 92%, 76% 90%, 74% 93%, 72% 90%, 70% 92%,
+                68% 90%, 66% 93%, 64% 90%, 62% 92%, 60% 90%,
+                58% 92%, 56% 90%, 54% 93%, 52% 90%, 50% 92%,
+                48% 90%, 46% 93%, 44% 90%, 42% 92%, 40% 90%,
+                38% 92%, 36% 90%, 34% 93%, 32% 90%, 30% 92%,
+                28% 90%, 26% 93%, 24% 90%, 22% 92%, 20% 90%,
+                18% 92%, 16% 90%, 14% 93%, 12% 90%, 10% 92%,
+                8% 90%, 6% 93%, 4% 90%, 2% 92%, 0% 90%
+            );
+        }
+
+        .torn-top {
+            clip-path: polygon(
+                0% 10%, 2% 8%, 4% 10%, 6% 7%, 8% 10%, 10% 8%,
+                12% 10%, 14% 7%, 16% 10%, 18% 8%, 20% 10%, 22% 8%,
+                24% 10%, 26% 7%, 28% 10%, 30% 8%, 32% 10%, 34% 8%,
+                36% 10%, 38% 7%, 40% 10%, 42% 8%, 44% 10%, 46% 8%,
+                48% 10%, 50% 7%, 52% 10%, 54% 8%, 56% 10%, 58% 8%,
+                60% 10%, 62% 7%, 64% 10%, 66% 8%, 68% 10%, 70% 8%,
+                72% 10%, 74% 7%, 76% 10%, 78% 8%, 80% 10%, 82% 8%,
+                84% 10%, 86% 7%, 88% 10%, 90% 8%, 92% 10%, 94% 8%,
+                96% 10%, 98% 7%, 100% 10%, 100% 100%, 0% 100%
+            );
+        }
+        .font-marker {
+            font-family: 'Permanent Marker', cursive;
+        }
+
+        /* Shadow lift for papers */
+        .paper-shadow {
+            box-shadow: 2px 4px 8px rgba(0,0,0,0.15);
+        }
+
+        /* Handwritten Font Class */
+        .font-hand {
+            font-family: 'Patrick Hand', cursive;
+        }
+        .font-marker {
+            font-family: 'Permanent Marker', cursive;
+        }
+
+        /* Shadow lift for papers */
+        .paper-shadow {
+            box-shadow: 2px 4px 8px rgba(0,0,0,0.15);
+        }
+        
+        /* Realistic "Rough" Border */
+        .rough-border {
+            border: 2px solid #333;
+            border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-12 min-h-screen">
+    
+    <!-- Grain Overlay -->
+    <div class="texture-overlay"></div>
+
+    <div class="max-w-6xl mx-auto relative">
+        
+        <!-- HEADER SECTION -->
+        <header class="mb-12 text-center relative">
+            <div class="inline-block relative">
+                <!-- Tape strip holding the title -->
+                <div class="washi-tape h-8 w-32 -top-4 -left-6 rotate-[-10deg] bg-yellow-200/80"></div>
+                <div class="washi-tape h-8 w-32 -bottom-2 -right-6 rotate-[-5deg] bg-blue-200/80"></div>
+                
+                <h1 class="font-marker text-5xl md:text-7xl text-gray-800 rotate-2 bg-white px-8 py-4 paper-shadow torn-paper">
+                    My Scrapbook
+                </h1>
+            </div>
+            <p class="mt-4 font-hand text-2xl text-gray-600 rotate-[-1deg]">
+                Collecting moments & chaos • 2024
+            </p>
+        </header>
+
+        <!-- MAIN COLLAGE GRID -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 auto-rows-auto">
+
+            <!-- 1. POLAROID PHOTO -->
+            <div class="relative group cursor-pointer transition-transform hover:scale-105 hover:z-10 rotate-[-3deg] lg:col-span-1">
+                <!-- Tape -->
+                <div class="washi-tape h-10 w-24 -top-3 left-1/2 -translate-x-1/2 bg-red-400/50 rotate-2"></div>
+                
+                <!-- Polaroid Frame -->
+                <div class="bg-white p-4 pb-12 shadow-xl border border-gray-200">
+                    <div class="w-full h-64 overflow-hidden grayscale contrast-125 group-hover:grayscale-0 transition-all duration-500">
+                        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1000&auto=format&fit=crop" class="w-full h-full object-cover border border-gray-100" alt="Landscape">
+                    </div>
+                    <div class="mt-4 text-center">
+                        <p class="font-hand text-2xl text-gray-700">Yosemite Trip 🌲</p>
+                        <p class="font-hand text-sm text-gray-400">Oct 14th</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. STICKY NOTE (TO-DO) -->
+            <div class="relative rotate-2 lg:col-span-1 lg:mt-12">
+                <div class="bg-yellow-100 p-6 shadow-lg transform transition-transform hover:-rotate-1 min-h-[300px]">
+                    <!-- Pin -->
+                    <div class="absolute -top-3 left-1/2 w-4 h-4 rounded-full bg-red-500 shadow-md border border-red-700"></div>
+                    
+                    <h2 class="font-marker text-2xl text-red-600 mb-4 underline decoration-wavy decoration-red-300">To Do List:</h2>
+                    <ul class="font-hand text-xl space-y-3 text-gray-800">
+                        <li class="flex items-center gap-2">
+                            <i class="ph-bold ph-check-square text-green-600"></i> Buy film rolls
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="ph-bold ph-square"></i> Edit weekend photos
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="ph-bold ph-square"></i> Coffee w/ Sarah
+                        </li>
+                        <li class="flex items-center gap-2 opacity-50 line-through">
+                            <i class="ph-bold ph-check-square"></i> Water plants
+                        </li>
+                    </ul>
+                    <!-- Coffee Stain SVG -->
+                    <svg class="absolute bottom-2 right-2 w-24 h-24 opacity-20 rotate-45" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#5a3a2a" stroke-width="8" />
+                        <path d="M50,10 A40,40 0 0,1 90,50" fill="none" stroke="#5a3a2a" stroke-width="8" stroke-dasharray="10 10" />
+                    </svg>
+                </div>
+            </div>
+
+            <!-- 3. TORN PAPER QUOTE -->
+            <div class="relative rotate-[-2deg] lg:col-span-1">
+                <div class="bg-white p-8 pt-12 shadow-xl torn-top relative max-w-sm mx-auto">
+                    <!-- Tape -->
+                    <div class="washi-tape h-8 w-24 top-0 left-0 bg-green-200/70 rotate-[-45deg] -translate-x-4 -translate-y-2"></div>
+
+                    <p class="font-serif text-lg leading-relaxed text-gray-800 italic">
+                        "Creativity is allowing yourself to make mistakes. Art is knowing which ones to keep."
+                    </p>
+                    <p class="mt-4 text-right font-hand font-bold text-gray-600">— Scott Adams</p>
+                    
+                    <!-- Sticker -->
+                    <div class="absolute -bottom-6 -right-4 w-16 h-16 bg-orange-300 rounded-full flex items-center justify-center shadow-md rotate-12 border-2 border-white border-dashed">
+                        <span class="font-bold text-white text-xs uppercase text-center leading-none">Good<br>Vibes</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. ENVELOPE / CONTACT FORM -->
+            <div class="relative col-span-1 md:col-span-2 lg:col-span-2 mt-8">
+                <div class="bg-[#e3d0b1] p-1 shadow-lg rotate-1 border-2 border-[#d4c0a1]">
+                    <!-- Inner Paper -->
+                    <div class="bg-white p-8 m-2 border border-gray-200 relative">
+                        
+                        <div class="absolute top-0 right-0 p-4">
+                            <!-- Stamp -->
+                            <div class="w-20 h-24 border-4 border-dotted border-red-300 flex items-center justify-center p-2 rotate-6 opacity-80">
+                                <i class="ph-fill ph-airplane-tilt text-3xl text-red-300"></i>
+                            </div>
+                        </div>
+
+                        <h3 class="font-serif text-2xl font-bold mb-6 border-b-2 border-gray-800 inline-block">Send a Note</h3>
+                        
+                        <form class="space-y-6 font-hand text-xl">
+                            <div class="flex flex-col md:flex-row gap-6">
+                                <div class="flex-1">
+                                    <label class="block text-gray-500 mb-1">Dear...</label>
+                                    <input type="text" placeholder="Your Name" class="w-full bg-transparent border-b-2 border-gray-300 focus:border-gray-800 outline-none p-2 placeholder-gray-300">
+                                </div>
+                                <div class="flex-1">
+                                    <label class="block text-gray-500 mb-1">Reply to...</label>
+                                    <input type="email" placeholder="your@email.com" class="w-full bg-transparent border-b-2 border-gray-300 focus:border-gray-800 outline-none p-2 placeholder-gray-300">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-gray-500 mb-1">Message:</label>
+                                <textarea rows="3" class="w-full bg-[url('https://www.transparenttextures.com/patterns/lined-paper.png')] border border-gray-200 p-4 focus:outline-none focus:border-gray-400 leading-8" style="line-height: 2rem;"></textarea>
+                            </div>
+                            <button class="bg-gray-800 text-white font-sans text-sm tracking-widest px-8 py-3 uppercase hover:bg-gray-700 rough-border transition-all hover:rotate-2">
+                                Post It
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. TICKET STUB -->
+            <div class="relative rotate-6 lg:col-span-1 flex items-center justify-center mt-12">
+                 <div class="bg-pink-100 w-64 p-0 shadow-md flex border-l-4 border-l-pink-400 border-r-4 border-r-pink-400" style="mask-image: radial-gradient(circle at 0 10px, transparent 8px, black 9px), radial-gradient(circle at 100% 10px, transparent 8px, black 9px); mask-position: 0 0, 0 0; mask-size: 100% 20px; mask-repeat: repeat-y;">
+                    <div class="p-4 border-r-2 border-dashed border-pink-300 flex-1 text-center">
+                        <p class="font-mono text-xs text-pink-500 mb-1">ADMIT ONE</p>
+                        <h4 class="font-marker text-2xl text-gray-800">Cinema</h4>
+                        <p class="font-hand text-lg text-gray-600">Row A, Seat 12</p>
+                    </div>
+                    <div class="p-2 flex items-center justify-center">
+                         <div class="font-mono text-xs text-pink-500 rotate-90 whitespace-nowrap">NO. 09241</div>
+                    </div>
+                 </div>
+                 <!-- Ticket Shadow -->
+                 <div class="absolute inset-0 bg-black opacity-10 -z-10 translate-x-2 translate-y-2 rounded-sm"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
