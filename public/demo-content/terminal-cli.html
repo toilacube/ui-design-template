@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dsAI_Terminal_v2.0</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- KERNEL CONFIGURATION (Variables) --- */
+        :root {
+            --bg-color: #000000;
+            --term-green: #00FF00;
+            --term-dim: #004400;
+            --term-alert: #FF0000;
+            --term-warn: #FFFF00;
+            --font-stack: 'Fira Code', 'Courier New', monospace;
+            --border-style: 1px solid var(--term-green);
+        }
+
+        /* --- SYSTEM RESET --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            outline: none;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--term-green);
+            font-family: var(--font-stack);
+            font-size: 14px;
+            line-height: 1.6;
+            overflow-x: hidden;
+            width: 100vw;
+        }
+
+        /* --- CRT EFFECTS --- */
+        body::after {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 999;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        /* --- TYPOGRAPHY --- */
+        h1, h2, h3, h4 {
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        h1 { font-size: 2rem; line-height: 1.2; }
+        h2 { font-size: 1.5rem; border-bottom: 2px dashed var(--term-green); display: inline-block; padding-bottom: 5px; margin-top: 2rem; }
+        h3 { font-size: 1.1rem; color: var(--term-green); }
+
+        a { color: var(--term-green); text-decoration: none; cursor: pointer; }
+        a:hover { background-color: var(--term-green); color: var(--bg-color); }
+
+        ul { list-style: none; }
+        
+        /* --- UTILITIES --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            border-left: var(--border-style);
+            border-right: var(--border-style);
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .section-padding { padding: 3rem 2rem; border-bottom: var(--border-style); }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; }
+        .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+
+        .text-dim { color: #008800; }
+        .text-alert { color: var(--term-alert); }
+        .text-warn { color: var(--term-warn); }
+
+        /* --- COMPONENTS --- */
+        
+        /* Buttons as Command Blocks */
+        .cmd-btn {
+            display: inline-block;
+            border: var(--border-style);
+            padding: 8px 16px;
+            margin-top: 1rem;
+            font-weight: bold;
+            transition: 0.1s;
+            background: transparent;
+            color: var(--term-green);
+        }
+        .cmd-btn::before { content: "[ "; }
+        .cmd-btn::after { content: " ]"; }
+        .cmd-btn:hover { background: var(--term-green); color: black; box-shadow: 0 0 10px var(--term-green); }
+
+        /* Blinking Cursor */
+        .cursor {
+            display: inline-block;
+            width: 10px; height: 1em;
+            background: var(--term-green);
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* ASCII Box */
+        .ascii-panel {
+            border: var(--border-style);
+            padding: 1.5rem;
+            position: relative;
+        }
+        .ascii-panel-title {
+            position: absolute;
+            top: -10px; left: 10px;
+            background: var(--bg-color);
+            padding: 0 5px;
+            font-weight: bold;
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            border-bottom: var(--border-style);
+            background: var(--bg-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-links { display: flex; gap: 1.5rem; }
+        .nav-item { position: relative; }
+        
+        /* Dropdown TUI Style */
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 100%; left: 0;
+            background: var(--bg-color);
+            border: var(--border-style);
+            width: 200px;
+            padding: 0.5rem;
+            z-index: 200;
+        }
+        .nav-item:hover .dropdown { display: block; }
+        .dropdown a { display: block; padding: 5px; margin-bottom: 2px; }
+        .dropdown a::before { content: "> "; }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            min-height: 80vh;
+        }
+        .hero-content {
+            padding: 3rem 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-right: var(--border-style);
+        }
+        .hero-visual {
+            position: relative;
+            background: #000;
+            overflow: hidden;
+        }
+        #canvas-container { width: 100%; height: 100%; }
+
+        /* --- PROBLEM/SOLUTION (LOGS) --- */
+        .log-entry {
+            font-family: var(--font-stack);
+            margin-bottom: 1rem;
+            border-left: 2px solid var(--term-alert);
+            padding-left: 1rem;
+        }
+        .log-timestamp { color: var(--term-dim); font-size: 0.8em; }
+
+        /* --- SHOWCASE (Benchmarks) --- */
+        .benchmark-row {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px dashed var(--term-dim);
+            padding: 0.5rem 0;
+        }
+        .benchmark-val { font-weight: bold; }
+
+        /* --- TESTIMONIALS (Chat Log) --- */
+        .chat-msg { margin-bottom: 1.5rem; }
+        .chat-user { font-weight: bold; color: var(--term-warn); }
+        .chat-meta { color: var(--term-dim); font-size: 0.8em; }
+
+        /* --- CTA (Input) --- */
+        .cli-input-group {
+            display: flex;
+            border: var(--border-style);
+            padding: 0.5rem;
+            margin-top: 1rem;
+            max-width: 500px;
+        }
+        .cli-prompt { padding-right: 0.5rem; color: var(--term-green); }
+        .cli-input {
+            background: transparent;
+            border: none;
+            color: var(--term-green);
+            flex-grow: 1;
+            font-family: var(--font-stack);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            padding: 3rem 2rem;
+            border-top: 3px double var(--term-green);
+        }
+        .footer-col h4 { border-bottom: 1px solid var(--term-dim); margin-bottom: 1rem; font-size: 0.9rem; }
+        .footer-col ul li { margin-bottom: 0.5rem; }
+        .footer-col ul li::before { content: "- "; color: var(--term-dim); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero { grid-template-columns: 1fr; }
+            .hero-content { border-right: none; border-bottom: var(--border-style); }
+            .grid-2 { grid-template-columns: 1fr; }
+            .nav-links { display: none; } /* Simplified for mobile */
+            .mobile-menu-btn { display: block; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- 1. HEADER / NAVIGATION -->
+        <nav>
+            <div class="logo">
+                <span style="color:white; background:var(--term-green); color:black; padding:0 5px; font-weight:bold;">dsAI</span>
+                <span class="text-dim">_sys_admin</span>
+            </div>
+
+            <ul class="nav-links">
+                <li class="nav-item">
+                    <a href="#">./Solutions</a>
+                    <div class="dropdown">
+                        <a href="#">--operational_auto</a>
+                        <a href="#">--data_warehouse</a>
+                        <a href="#">--ai_support</a>
+                        <a href="#">--legacy_mod</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="#">./Case_Studies</a>
+                    <div class="dropdown">
+                        <a href="#">/Fintech</a>
+                        <a href="#">/Healthcare</a>
+                        <a href="#">/Logistics</a>
+                        <a href="#">/Retail</a>
+                    </div>
+                </li>
+                <li><a href="#">./Methodology</a></li>
+                <li><a href="#">./Company</a></li>
+                <li><a href="#">./Resources</a></li>
+            </ul>
+
+            <div style="display:flex; gap:1rem; align-items:center;">
+                <a href="#" style="font-size:0.8rem;">[ LOGIN ]</a>
+                <a href="#cta" class="cmd-btn" style="margin:0; font-size:0.8rem;">BOOK_CONSULT</a>
+            </div>
+        </nav>
+
+        <!-- 2. HERO SECTION -->
+        <section class="hero">
+            <div class="hero-content">
+                <p class="text-dim">> initializing_business_transformation_sequence...</p>
+                <h1 class="typewriter" data-text="Your Operations, Streamlined.\nYour Data, Centralized.\nYour Future, Secured."></h1>
+                <p style="margin-top: 1.5rem; max-width: 600px;">
+                    dsAI delivers custom digital solutions that eliminate silos and elevate your customer support. We build the scalable infrastructure your business needs to grow without the growing pains—bridging the gap between legacy systems and AI-driven efficiency.
+                </p>
+                
+                <div style="margin: 1.5rem 0;">
+                    <div>[OK] Reduce operational overhead by 40%</div>
+                    <div>[OK] Unified data sources for real-time intelligence</div>
+                    <div>[OK] Enterprise-grade security & compliance</div>
+                </div>
+
+                <div>
+                    <a href="#cta" class="cmd-btn">EXECUTE STRATEGY</a>
+                    <a href="#services" style="margin-left: 1rem; border-bottom:1px solid var(--term-green);">Explore Services -></a>
+                </div>
+
+                <div style="margin-top: 3rem; border-top: 1px dashed var(--term-dim); padding-top: 1rem;">
+                    <p class="text-dim" style="font-size: 0.8rem;">TRUSTED_BY_ROOT_USERS:</p>
+                    <div style="display:flex; gap: 1rem; margin-top:0.5rem; opacity: 0.8;">
+                        <span>[LogisticsCo]</span>
+                        <span>[FinTech_Corp]</span>
+                        <span>[MedSafe]</span>
+                        <span>[RetailGiant]</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hero-visual">
+                <!-- Three.js Canvas Container -->
+                <div id="canvas-container"></div>
+                <div style="position:absolute; bottom:10px; right:10px; font-size:10px; background:black; border:1px solid lime; padding:2px;">FIG_01: CENTRAL_NODE_SHIELD</div>
+            </div>
+        </section>
+
+        <!-- 3. PROBLEM & SOLUTION -->
+        <section class="section-padding">
+            <h2>DIAGNOSTIC_LOG: EFFICIENCY_GAP</h2>
+            <p class="text-dim" style="margin-bottom: 2rem;">> analyzing system bottlenecks...</p>
+            
+            <div class="grid-2">
+                <div class="ascii-panel">
+                    <span class="ascii-panel-title">ERROR_LOG.txt</span>
+                    <div class="log-entry">
+                        <div class="log-timestamp">[10:04:21] CRITICAL_FAILURE</div>
+                        <strong class="text-alert">DATA_SILOS_DETECTED</strong>
+                        <p>Critical customer data trapped in disconnected tools. Decision making logic blind.</p>
+                    </div>
+                    <div class="log-entry">
+                        <div class="log-timestamp">[10:04:22] PROCESS_HANG</div>
+                        <strong class="text-alert">MANUAL_BOTTLENECKS</strong>
+                        <p>High CPU (Talent) wasted on copy-paste admin tasks. Throughput compromised.</p>
+                    </div>
+                    <div class="log-entry">
+                        <div class="log-timestamp">[10:04:23] TIMEOUT_ERROR</div>
+                        <strong class="text-alert">REACTIVE_SUPPORT</strong>
+                        <p>Support buffer overflow. Response times critical. Churn imminent.</p>
+                    </div>
+                </div>
+
+                <div style="display:flex; align-items:center; justify-content:center; border: 1px dashed var(--term-dim); padding: 2rem;">
+                    <div style="text-align:center;">
+                        <p style="font-size: 1.2rem; margin-bottom: 1rem;">> PATCH_AVAILABLE</p>
+                        <p class="text-dim">"dsAI bridges the gap with intelligent architecture."</p>
+                        <div style="margin-top:1rem; color:var(--term-green);">
+                            [||||||||||||||||||||] 100%
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. FEATURES / BENEFITS -->
+        <section class="section-padding" id="services">
+            <h2>MODULES_INSTALLED (The dsAI Advantage)</h2>
+            <p style="margin-bottom: 2rem;">> Re-engineering digital foundation via 3-pillar architecture.</p>
+
+            <div class="grid-3">
+                <!-- Feature 1 -->
+                <div class="ascii-panel">
+                    <span class="ascii-panel-title">mod_automation</span>
+                    <h3 style="margin-bottom:1rem;">Streamlined Operations</h3>
+                    <p style="font-size:0.9rem; margin-bottom:1rem;">Automating repetitive manual processes via custom scripts. Overhead reduced by 40%.</p>
+                    <ul style="font-size:0.85rem;">
+                        <li>+ Custom API Dev</li>
+                        <li>+ Cross-platform Sync</li>
+                        <li>+ Auto-reporting</li>
+                    </ul>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="ascii-panel">
+                    <span class="ascii-panel-title">mod_data_warehouse</span>
+                    <h3 style="margin-bottom:1rem;">Centralized Data</h3>
+                    <p style="font-size:0.9rem; margin-bottom:1rem;">Single Source of Truth (SSOT). Real-time KPI visibility.</p>
+                    <ul style="font-size:0.85rem;">
+                        <li>+ ETL Pipelines</li>
+                        <li>+ Dashboard Viz</li>
+                        <li>+ DB Migration</li>
+                    </ul>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="ascii-panel">
+                    <span class="ascii-panel-title">mod_ai_agent</span>
+                    <h3 style="margin-bottom:1rem;">AI Support Agents</h3>
+                    <p style="font-size:0.9rem; margin-bottom:1rem;">NLP-driven Tier-1 inquiry handling. 24/7 uptime.</p>
+                    <ul style="font-size:0.85rem;">
+                        <li>+ NLP Integration</li>
+                        <li>+ Multi-channel</li>
+                        <li>+ Sentiment Routing</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. METHODOLOGY -->
+        <section class="section-padding">
+            <h2>EXECUTION_PLAN.sh</h2>
+            <p>> From Chaos to Clarity in 4 Steps</p>
+
+            <div style="margin-top: 2rem;">
+                <div style="margin-bottom: 1rem;">
+                    <strong style="color:white; background:var(--term-green); color:black; padding:2px;">STEP_01</strong> 
+                    <strong> > Discovery & Audit</strong>
+                    <p style="margin-left: 4.5rem; color:var(--term-dim);">// Deep stack analysis. Identify bottlenecks & vulns.</p>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <strong style="color:white; background:var(--term-green); color:black; padding:2px;">STEP_02</strong> 
+                    <strong> > Architecture Strategy</strong>
+                    <p style="margin-left: 4.5rem; color:var(--term-dim);">// Roadmap design. Tech stack selection.</p>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <strong style="color:white; background:var(--term-green); color:black; padding:2px;">STEP_03</strong> 
+                    <strong> > Agile Implementation</strong>
+                    <p style="margin-left: 4.5rem; color:var(--term-dim);">// 2-week sprints. Pivot capability enabled.</p>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <strong style="color:white; background:var(--term-green); color:black; padding:2px;">STEP_04</strong> 
+                    <strong> > Training & Handoff</strong>
+                    <p style="margin-left: 4.5rem; color:var(--term-dim);">// Team training. Docs generation. Long-term adoption.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. SHOWCASE -->
+        <section class="section-padding">
+            <h2>SYSTEM_BENCHMARKS (Proven Results)</h2>
+            
+            <div class="grid-2" style="margin-top:2rem;">
+                <!-- Case 1 -->
+                <div class="ascii-panel">
+                    <h3 style="font-size:0.9rem;">Global Logistics Dashboard</h3>
+                    <p style="font-size:0.8rem; color:var(--term-dim); margin-bottom:1rem;">TARGET: Fragmented freight data.</p>
+                    <div class="benchmark-row">
+                        <span>STATUS:</span>
+                        <span class="benchmark-val" style="color:var(--term-green);">SUCCESS</span>
+                    </div>
+                    <div class="benchmark-row">
+                        <span>RESULT:</span>
+                        <span class="benchmark-val">32% Delay Reduction</span>
+                    </div>
+                    <a href="#" style="font-size:0.8rem; display:block; margin-top:1rem;">> read_log_file</a>
+                </div>
+
+                <!-- Case 2 -->
+                <div class="ascii-panel">
+                    <h3 style="font-size:0.9rem;">FinTech CRM Integration</h3>
+                    <p style="font-size:0.8rem; color:var(--term-dim); margin-bottom:1rem;">TARGET: Slow onboarding (4d).</p>
+                    <div class="benchmark-row">
+                        <span>STATUS:</span>
+                        <span class="benchmark-val" style="color:var(--term-green);">OPTIMIZED</span>
+                    </div>
+                    <div class="benchmark-row">
+                        <span>RESULT:</span>
+                        <span class="benchmark-val">1.5 Days (60% Faster)</span>
+                    </div>
+                    <a href="#" style="font-size:0.8rem; display:block; margin-top:1rem;">> read_log_file</a>
+                </div>
+
+                <!-- Case 3 -->
+                <div class="ascii-panel">
+                    <h3 style="font-size:0.9rem;">Retail AI Support Bot</h3>
+                    <p style="font-size:0.8rem; color:var(--term-dim); margin-bottom:1rem;">TARGET: Holiday peak overflow.</p>
+                    <div class="benchmark-row">
+                        <span>STATUS:</span>
+                        <span class="benchmark-val" style="color:var(--term-green);">ACTIVE</span>
+                    </div>
+                    <div class="benchmark-row">
+                        <span>RESULT:</span>
+                        <span class="benchmark-val"><30s Response Time</span>
+                    </div>
+                    <a href="#" style="font-size:0.8rem; display:block; margin-top:1rem;">> read_log_file</a>
+                </div>
+
+                <!-- Case 4 -->
+                <div class="ascii-panel">
+                    <h3 style="font-size:0.9rem;">Healthcare Compliance</h3>
+                    <p style="font-size:0.8rem; color:var(--term-dim); margin-bottom:1rem;">TARGET: HIPAA Risk.</p>
+                    <div class="benchmark-row">
+                        <span>STATUS:</span>
+                        <span class="benchmark-val" style="color:var(--term-green);">SECURE</span>
+                    </div>
+                    <div class="benchmark-row">
+                        <span>RESULT:</span>
+                        <span class="benchmark-val">100% Audit Readiness</span>
+                    </div>
+                    <a href="#" style="font-size:0.8rem; display:block; margin-top:1rem;">> read_log_file</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. TESTIMONIALS -->
+        <section class="section-padding">
+            <h2>USER_REVIEWS (Partners in Growth)</h2>
+            <div style="margin-bottom:2rem;">
+                <span style="background:var(--term-green); color:black; padding:2px 5px; font-weight:bold;">CLUTCH: 4.9/5</span>
+                <span style="background:var(--term-green); color:black; padding:2px 5px; font-weight:bold;">G2: 5/5</span>
+            </div>
+
+            <div class="ascii-panel">
+                <div class="chat-msg">
+                    <div class="chat-meta">[14:02] <span class="chat-user">James_T (COO @ FinServe):</span></div>
+                    <p>"Before dsAI, data was scattered across 5 tools. Now centralized. Response times halved. ROI evident in 3 months."</p>
+                </div>
+                <div class="chat-msg">
+                    <div class="chat-meta">[15:45] <span class="chat-user">Linda_K (DirOps @ LogiMove):</span></div>
+                    <p>"Automation saved us 20hrs/week on manual entry. Scaled headcount without sacrificing quality."</p>
+                </div>
+                <div class="chat-msg">
+                    <div class="chat-meta">[09:12] <span class="chat-user">Marcus_R (CTO @ HealthFlow):</span></div>
+                    <p>"Professional, technical, deep understanding. Not just a vendor, but partners."</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. FAQ -->
+        <section class="section-padding">
+            <h2>FAQ.man</h2>
+            
+            <dl>
+                <dt style="font-weight:bold; margin-top:1.5rem; color:var(--term-warn);">Q: implementation_time?</dt>
+                <dd style="margin-left:1rem; border-left:1px solid var(--term-dim); padding-left:1rem; margin-top:0.5rem;">
+                    A: Pilot projects live in 4-6 weeks. Enterprise rollouts 3-4 months.
+                </dd>
+
+                <dt style="font-weight:bold; margin-top:1.5rem; color:var(--term-warn);">Q: legacy_system_support?</dt>
+                <dd style="margin-left:1rem; border-left:1px solid var(--term-dim); padding-left:1rem; margin-top:0.5rem;">
+                    A: YES. We wrap legacy systems with modern APIs. No full rewrite required.
+                </dd>
+
+                <dt style="font-weight:bold; margin-top:1.5rem; color:var(--term-warn);">Q: security_protocols?</dt>
+                <dd style="margin-left:1rem; border-left:1px solid var(--term-dim); padding-left:1rem; margin-top:0.5rem;">
+                    A: SOC2 Compliant. Security by Design. End-to-end encryption.
+                </dd>
+            </dl>
+        </section>
+
+        <!-- 9. CTA -->
+        <section class="section-padding" id="cta" style="text-align: center; border-bottom:none;">
+            <h2>INITIATE_MODERNIZATION?</h2>
+            <p>Stop inefficiencies. Unlock data potential.</p>
+            
+            <div style="display:flex; justify-content:center; margin-top:2rem;">
+                <button class="cmd-btn" style="font-size:1.2rem;">SCHEDULE_DISCOVERY_CALL</button>
+            </div>
+
+            <div style="margin-top: 2rem; display:flex; flex-direction:column; align-items:center;">
+                <p style="font-size:0.8rem;">Or subscribe to newsletter:</p>
+                <div class="cli-input-group">
+                    <span class="cli-prompt">visitor@dsai:~$</span>
+                    <input type="email" class="cli-input" placeholder="enter_work_email...">
+                    <button style="background:var(--term-green); border:none; color:black; font-weight:bold; cursor:pointer;">[SUB]</button>
+                </div>
+                <p style="margin-top:1rem; font-size:0.7rem; color:var(--term-dim);">
+                    Free initial consult. No commitment. Response < 24hrs.
+                </p>
+            </div>
+        </section>
+
+        <!-- 10. FOOTER -->
+        <footer>
+            <div class="grid-4">
+                <div class="footer-col">
+                    <h4 style="border:none;">dsAI_CORP</h4>
+                    <p style="font-size:0.8rem;">Custom digital solutions.</p>
+                    <address style="font-style:normal; font-size:0.8rem; margin-top:1rem; color:var(--term-dim);">
+                        123 Innovation Dr<br>Tech City, TC 94000
+                    </address>
+                    <p style="font-size:0.8rem; margin-top:0.5rem;">hello@dsai.com</p>
+                </div>
+
+                <div class="footer-col">
+                    <h4>/Services</h4>
+                    <ul>
+                        <li><a href="#">Op_Automation</a></li>
+                        <li><a href="#">Data_Warehouse</a></li>
+                        <li><a href="#">AI_Support</a></li>
+                        <li><a href="#">Legacy_Mod</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>/Company</h4>
+                    <ul>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Leadership</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press_Kit</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>/Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy_Policy</a></li>
+                        <li><a href="#">Security</a></li>
+                        <li><a href="#">Terms_of_Service</a></li>
+                    </ul>
+                    <div style="margin-top:1rem;">
+                        <span style="border:1px solid var(--term-green); font-size:0.7rem; padding:2px;">[SOC2]</span>
+                        <span style="border:1px solid var(--term-green); font-size:0.7rem; padding:2px;">[ISO]</span>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align:center; margin-top:2rem; font-size:0.7rem; color:var(--term-dim);">
+                &copy; 2025 dsAI. All rights reserved. EOF.
+            </div>
+        </footer>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script>
+        // --- TYPEWRITER EFFECT ---
+        const typeWriter = (el) => {
+            const text = el.getAttribute('data-text');
+            el.innerHTML = '';
+            let i = 0;
+            
+            function type() {
+                if (i < text.length) {
+                    let char = text.charAt(i);
+                    if (char === '\n') {
+                        el.innerHTML += '<br/>';
+                    } else {
+                        el.innerHTML += char;
+                    }
+                    i++;
+                    setTimeout(type, 50);
+                } else {
+                    el.innerHTML += '<span class="cursor"></span>';
+                }
+            }
+            type();
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const el = document.querySelector('.typewriter');
+            if(el) typeWriter(el);
+            initThreeJS();
+        });
+
+        // --- THREE.JS WIREFRAME SHIELD ---
+        function initThreeJS() {
+            const container = document.getElementById('canvas-container');
+            const width = container.offsetWidth;
+            const height = container.offsetHeight;
+
+            const scene = new THREE.Scene();
+            
+            // Orthographic for technical look
+            const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+            camera.position.z = 25;
+
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: false }); // False antialias for jagged pixels
+            renderer.setSize(width, height);
+            container.appendChild(renderer.domElement);
+
+            // Create a "Shield" shape from points
+            const geometry = new THREE.IcosahedronGeometry(12, 1);
+            
+            // Wireframe Material
+            const wireframeMaterial = new THREE.LineBasicMaterial({ color: 0x00FF00, transparent: true, opacity: 0.6 });
+            const wireframe = new THREE.LineSegments(new THREE.WireframeGeometry(geometry), wireframeMaterial);
+            scene.add(wireframe);
+
+            // Points Material for "Nodes"
+            const pointsMaterial = new THREE.PointsMaterial({ color: 0x00FF00, size: 0.5 });
+            const points = new THREE.Points(geometry, pointsMaterial);
+            scene.add(points);
+
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                wireframe.rotation.y += 0.005;
+                points.rotation.y += 0.005;
+                
+                // Slight wobble
+                wireframe.rotation.x = Math.sin(Date.now() * 0.001) * 0.2;
+                points.rotation.x = Math.sin(Date.now() * 0.001) * 0.2;
+
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            // Handle Resize
+            window.addEventListener('resize', () => {
+                const w = container.offsetWidth;
+                const h = container.offsetHeight;
+                renderer.setSize(w, h);
+                camera.aspect = w / h;
+                camera.updateProjectionMatrix();
+            });
+        }
+    </script>
+</body>
+</html>
